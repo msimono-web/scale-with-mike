@@ -174,7 +174,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-4">
             {[
               { icon: '📞', title: 'Leads jamais rappelés', desc: 'Un lead non contacté sous 5 minutes a 80% de chances d\'être perdu. La plupart ne sont jamais rappelés.' },
-              { icon: '🔄', title: 'Relances qui tombent à l'eau', desc: 'Vos commerciaux ont autre chose à faire. Les relances sont oubliées. Des contrats vous échappent chaque semaine.' },
+              { icon: '🔄', title: "Relances qui tombent à l'eau", desc: "Vos commerciaux ont autre chose à faire. Les relances sont oubliées. Des contrats vous échappent chaque semaine." },
               { icon: '😓', title: 'Commerciaux qui prospectent au lieu de closer', desc: 'Ils passent 60% de leur temps à qualifier des leads froids. C\'est du CA perdu directement.' },
               { icon: '💸', title: 'Budget marketing gaspillé', desc: 'Vous payez pour générer des leads que personne ne traite correctement. Le problème est dans le suivi, pas la génération.' },
             ].map(({ icon, title, desc }) => (
