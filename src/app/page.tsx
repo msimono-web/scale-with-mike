@@ -385,92 +385,91 @@ export default function Home() {
       </section>
 
       {/* ─── DASHBOARD UPSELL ─────────────────────────────────────────────── */}
-      <section className="py-24 bg-slate-950 text-white overflow-hidden">
+      <section className="py-24 bg-slate-50 overflow-hidden">
         <div className="max-w-6xl mx-auto px-6">
 
           {/* Header */}
           <div className="text-center mb-14">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/15 border border-cyan-500/25 rounded-full text-cyan-400 text-xs font-black tracking-widest uppercase mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 border border-blue-200 rounded-full text-blue-700 text-xs font-black tracking-widest uppercase mb-6">
               <Zap className="w-3 h-3" /> Option complémentaire — +200€/mois
             </div>
-            <h2 className="text-4xl md:text-5xl font-black uppercase leading-tight mb-4">
+            <h2 className="text-4xl md:text-5xl font-black leading-tight mb-4 text-slate-900">
               Ne perdez plus<br />
-              <span className="text-cyan-400">aucun lead.</span>
+              <span style={{ color: '#0a1aff' }}>aucun lead.</span>
             </h2>
-            <p className="text-slate-400 text-lg max-w-xl mx-auto">
+            <p className="text-slate-500 text-lg max-w-xl mx-auto">
               Un dashboard CRM pensé pour les équipes call center. Chaque lead tracké, chaque agent suivi, chaque euro mesuré.
             </p>
           </div>
 
-          {/* 4 avantages */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
+          {/* 4 avantages — cartes blanches claires */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
             {[
-              { icon: '🎯', title: 'Zéro lead perdu', desc: 'Chaque contact est loggé automatiquement. Aucun lead ne tombe dans le vide.' },
-              { icon: '📊', title: 'Pipeline visuel', desc: 'Vue kanban en temps réel. Voyez où en est chaque prospect en un coup d\'oeil.' },
-              { icon: '⚡', title: 'Productivité maximale', desc: 'Vos agents savent exactement quoi faire à chaque instant. Fini le chaos.' },
-              { icon: '💰', title: 'ROI transparent', desc: 'Coût par RDV, taux de contact, CA généré. Chaque euro est visible et justifié.' },
-            ].map(({ icon, title, desc }) => (
-              <div key={title} className="rounded-2xl p-5 border border-slate-800 bg-slate-900 hover:border-cyan-500/40 hover:bg-slate-800/60 transition-all group">
-                <div className="text-3xl mb-3">{icon}</div>
-                <h3 className="font-black text-white mb-2 text-[15px] group-hover:text-cyan-400 transition-colors">{title}</h3>
+              { icon: '🎯', title: 'Zéro lead perdu', desc: 'Chaque contact loggé automatiquement. Aucun prospect ne tombe dans le vide.', accent: '#0a1aff' },
+              { icon: '📊', title: 'Pipeline visuel', desc: 'Vue kanban en temps réel. Voyez exactement où en est chaque prospect.', accent: '#7c3aed' },
+              { icon: '⚡', title: 'Productivité max', desc: 'Vos agents savent quoi faire à chaque instant. Fini le chaos et les oublis.', accent: '#f59e0b' },
+              { icon: '💰', title: 'ROI transparent', desc: 'Coût par RDV, CA généré, taux de contact. Chaque euro visible et justifié.', accent: '#10b981' },
+            ].map(({ icon, title, desc, accent }) => (
+              <div key={title} className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4" style={{ background: accent + '15' }}>
+                  {icon}
+                </div>
+                <h3 className="font-black text-slate-900 mb-2">{title}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>
 
-          {/* Mockup pipeline CRM */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 overflow-hidden mb-10">
+          {/* Mockup pipeline CRM — sur fond blanc, cartes claires */}
+          <div className="rounded-2xl border border-slate-200 bg-white shadow-xl overflow-hidden mb-10">
             {/* Topbar */}
-            <div className="flex items-center justify-between px-5 py-3 border-b border-slate-800 bg-slate-950">
+            <div className="flex items-center justify-between px-5 py-3 border-b border-slate-100 bg-slate-50">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500/70" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
-                <div className="w-3 h-3 rounded-full bg-green-500/70" />
-                <span className="ml-3 text-slate-500 text-xs font-mono">ScaleWithMike · CRM Pipeline</span>
+                <div className="w-3 h-3 rounded-full bg-red-400" />
+                <div className="w-3 h-3 rounded-full bg-yellow-400" />
+                <div className="w-3 h-3 rounded-full bg-green-400" />
+                <span className="ml-3 text-slate-400 text-xs font-mono font-semibold">ScaleWithMike · CRM Pipeline</span>
               </div>
-              <div className="flex items-center gap-2 text-xs text-slate-600">
+              <div className="flex items-center gap-1.5 text-xs text-slate-400 font-semibold">
                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse inline-block" />
-                Live
+                En direct
               </div>
             </div>
             {/* Kanban columns */}
-            <div className="p-5 overflow-x-auto">
+            <div className="p-5 bg-slate-50 overflow-x-auto">
               <div className="flex gap-4 min-w-[700px]">
                 {[
-                  { label: 'NOUVEAUX LEADS', color: 'border-blue-500/50 bg-blue-500/5', dot: 'bg-blue-400', count: 12, cards: [
-                    { name: 'Thomas M.', co: 'BTP Rhône', tag: 'Chaud', tagC: 'bg-orange-500/20 text-orange-400' },
-                    { name: 'Sarah L.', co: 'SaaS Paris', tag: 'Nouveau', tagC: 'bg-blue-500/20 text-blue-400' },
-                    { name: 'Marc D.', co: 'Immo Lyon', tag: 'Urgent', tagC: 'bg-red-500/20 text-red-400' },
+                  { label: 'NOUVEAUX LEADS', headerBg: 'bg-blue-600', count: 12, cards: [
+                    { name: 'Thomas M.', co: 'BTP Rhône', tag: 'Chaud', tagBg: 'bg-orange-100 text-orange-700' },
+                    { name: 'Sarah L.', co: 'SaaS Paris', tag: 'Nouveau', tagBg: 'bg-blue-100 text-blue-700' },
+                    { name: 'Marc D.', co: 'Immo Lyon', tag: 'Urgent', tagBg: 'bg-red-100 text-red-700' },
                   ]},
-                  { label: 'EN CONTACT', color: 'border-yellow-500/50 bg-yellow-500/5', dot: 'bg-yellow-400', count: 8, cards: [
-                    { name: 'Julie R.', co: 'Formation Pro', tag: 'Rappel J+1', tagC: 'bg-yellow-500/20 text-yellow-400' },
-                    { name: 'Pierre V.', co: 'Industrie Est', tag: 'Envoyé', tagC: 'bg-slate-500/20 text-slate-400' },
+                  { label: 'EN CONTACT', headerBg: 'bg-yellow-500', count: 8, cards: [
+                    { name: 'Julie R.', co: 'Formation Pro', tag: 'Rappel J+1', tagBg: 'bg-yellow-100 text-yellow-700' },
+                    { name: 'Pierre V.', co: 'Industrie Est', tag: 'Envoyé', tagBg: 'bg-slate-100 text-slate-600' },
                   ]},
-                  { label: 'QUALIFICATION', color: 'border-purple-500/50 bg-purple-500/5', dot: 'bg-purple-400', count: 5, cards: [
-                    { name: 'Anna K.', co: 'Tech B2B', tag: 'Score 8/10', tagC: 'bg-purple-500/20 text-purple-400' },
-                    { name: 'Romain C.', co: 'Services', tag: 'En cours', tagC: 'bg-slate-500/20 text-slate-400' },
+                  { label: 'QUALIFICATION', headerBg: 'bg-purple-600', count: 5, cards: [
+                    { name: 'Anna K.', co: 'Tech B2B', tag: 'Score 8/10', tagBg: 'bg-purple-100 text-purple-700' },
+                    { name: 'Romain C.', co: 'Services', tag: 'En cours', tagBg: 'bg-slate-100 text-slate-600' },
                   ]},
-                  { label: 'RDV POSÉS', color: 'border-green-500/50 bg-green-500/5', dot: 'bg-green-400', count: 7, cards: [
-                    { name: 'Léa B.', co: 'Retail Sud', tag: '✓ Confirmé', tagC: 'bg-green-500/20 text-green-400' },
-                    { name: 'Hugo P.', co: 'Logistique', tag: '✓ Lundi 14h', tagC: 'bg-green-500/20 text-green-400' },
+                  { label: 'RDV POSÉS', headerBg: 'bg-green-600', count: 7, cards: [
+                    { name: 'Léa B.', co: 'Retail Sud', tag: '✓ Confirmé', tagBg: 'bg-green-100 text-green-700' },
+                    { name: 'Hugo P.', co: 'Logistique', tag: '✓ Lundi 14h', tagBg: 'bg-green-100 text-green-700' },
                   ]},
                 ].map(col => (
-                  <div key={col.label} className={`flex-1 rounded-xl border ${col.color} p-3`}>
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className={`w-2 h-2 rounded-full ${col.dot}`} />
-                        <span className="text-[10px] font-black tracking-widest text-slate-400 uppercase">{col.label}</span>
-                      </div>
-                      <span className="text-[10px] bg-slate-800 text-slate-400 rounded-full px-2 py-0.5 font-bold">{col.count}</span>
+                  <div key={col.label} className="flex-1 rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+                    <div className={`${col.headerBg} px-3 py-2 flex items-center justify-between`}>
+                      <span className="text-[10px] font-black tracking-widest text-white uppercase">{col.label}</span>
+                      <span className="text-[10px] bg-white/20 text-white rounded-full px-2 py-0.5 font-bold">{col.count}</span>
                     </div>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 p-2.5">
                       {col.cards.map(card => (
-                        <div key={card.name} className="bg-slate-800/80 rounded-lg p-2.5 border border-slate-700/50">
+                        <div key={card.name} className="bg-white rounded-lg p-2.5 border border-slate-100 shadow-xs">
                           <div className="flex items-start justify-between gap-1 mb-1">
-                            <span className="text-white text-xs font-bold leading-tight">{card.name}</span>
-                            <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${card.tagC}`}>{card.tag}</span>
+                            <span className="text-slate-900 text-xs font-bold leading-tight">{card.name}</span>
+                            <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${card.tagBg}`}>{card.tag}</span>
                           </div>
-                          <span className="text-slate-500 text-[10px]">{card.co}</span>
+                          <span className="text-slate-400 text-[10px]">{card.co}</span>
                         </div>
                       ))}
                     </div>
@@ -479,16 +478,16 @@ export default function Home() {
               </div>
             </div>
             {/* Stats bar */}
-            <div className="grid grid-cols-4 divide-x divide-slate-800 border-t border-slate-800">
+            <div className="grid grid-cols-4 divide-x divide-slate-100 border-t border-slate-100 bg-white">
               {[
-                { val: '32', lbl: 'Leads actifs', c: 'text-white' },
-                { val: '87%', lbl: 'Taux de contact', c: 'text-green-400' },
-                { val: '7', lbl: 'RDV ce mois', c: 'text-cyan-400' },
-                { val: '4.2€', lbl: 'Coût / RDV', c: 'text-yellow-400' },
+                { val: '32', lbl: 'Leads actifs', c: 'text-slate-900' },
+                { val: '87%', lbl: 'Taux de contact', c: 'text-green-600' },
+                { val: '7', lbl: 'RDV ce mois', c: 'text-blue-600' },
+                { val: '4.2€', lbl: 'Coût / RDV', c: 'text-amber-600' },
               ].map(s => (
-                <div key={s.lbl} className="py-3 text-center">
-                  <div className={`text-lg font-black ${s.c}`}>{s.val}</div>
-                  <div className="text-slate-600 text-[10px] mt-0.5">{s.lbl}</div>
+                <div key={s.lbl} className="py-4 text-center">
+                  <div className={`text-xl font-black ${s.c}`}>{s.val}</div>
+                  <div className="text-slate-400 text-[11px] mt-0.5 font-medium">{s.lbl}</div>
                 </div>
               ))}
             </div>
@@ -497,13 +496,13 @@ export default function Home() {
           {/* CTA */}
           <div className="text-center">
             <div className="inline-flex flex-col items-center gap-4">
-              <div className="text-4xl font-black text-white">+200€<span className="text-slate-500 text-lg font-normal">/mois</span></div>
+              <div className="text-4xl font-black text-slate-900">+200€<span className="text-slate-400 text-lg font-normal">/mois</span></div>
               <a href="#contact"
-                className="flex items-center gap-2 px-8 py-4 font-black text-sm tracking-widest uppercase rounded-xl transition-all shadow-lg"
-                style={{ background: '#06b6d4', color: '#fff' }}>
+                className="flex items-center gap-2 px-8 py-4 font-black text-sm tracking-widest uppercase rounded-xl transition-all shadow-lg hover:opacity-90"
+                style={{ background: '#0a1aff', color: '#fde68a' }}>
                 <Zap className="w-4 h-4" /> Activer mon dashboard CRM
               </a>
-              <p className="text-slate-600 text-xs">Intégré à votre plan · Déploiement en 24h</p>
+              <p className="text-slate-400 text-xs">Intégré à votre plan · Déploiement en 24h</p>
             </div>
           </div>
 
