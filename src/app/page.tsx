@@ -7,6 +7,28 @@ import { Phone, CheckCircle2, ArrowRight, ChevronDown, Star, Zap } from 'lucide-
 // ─── FORM ─────────────────────────────────────────────────────────────────────
 function DiagForm({ dark = false }: { dark?: boolean }) {
   const [sent, setSent] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [prenom, setPrenom] = useState('')
+  const [email, setEmail] = useState('')
+  const [telephone, setTelephone] = useState('')
+
+  const handleSubmit = async () => {
+    if (!prenom && !telephone) return
+    setLoading(true)
+    try {
+      await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prenom, email, telephone, source: 'Site web' }),
+      })
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setLoading(false)
+      setSent(true)
+    }
+  }
+
   if (sent) return (
     <div className="rounded-2xl p-8 text-center bg-white border border-slate-200 shadow-xl">
       <CheckCircle2 className="w-10 h-10 text-green-500 mx-auto mb-3" />
@@ -22,16 +44,16 @@ function DiagForm({ dark = false }: { dark?: boolean }) {
       </div>
       <div className="flex flex-col gap-3">
         <div className="flex gap-3">
-          <input placeholder="Prénom" className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
-          <input placeholder="Email" className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
+          <input placeholder="Prénom" value={prenom} onChange={e => setPrenom(e.target.value)} className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
+          <input placeholder="Email" type="email" value={email} onChange={e => setEmail(e.target.value)} className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
         </div>
-        <input placeholder="Téléphone / WhatsApp" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
-        <button onClick={() => setSent(true)}
-          className="w-full py-4 font-black rounded-xl transition-all text-sm tracking-widest uppercase shadow-lg hover:opacity-90"
+        <input placeholder="Téléphone / WhatsApp" value={telephone} onChange={e => setTelephone(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
+        <button onClick={handleSubmit} disabled={loading}
+          className="w-full py-4 font-black rounded-xl transition-all text-sm tracking-widest uppercase shadow-lg hover:opacity-90 disabled:opacity-60"
           style={{ background: '#0a1aff', color: '#fde68a' }}>
-          Recevoir mon diagnostic gratuit →
+          {loading ? 'Envoi…' : 'Recevoir mon diagnostic gratuit →'}
         </button>
-        <button onClick={() => setSent(true)} className="w-full py-3 border border-slate-200 text-slate-600 text-sm rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2 font-semibold">
+        <button onClick={handleSubmit} disabled={loading} className="w-full py-3 border border-slate-200 text-slate-600 text-sm rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2 font-semibold">
           <Phone className="w-4 h-4 text-blue-600" /> On vous rappelle directement
         </button>
       </div>
