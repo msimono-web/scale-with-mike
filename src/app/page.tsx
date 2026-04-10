@@ -2,60 +2,58 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Phone, CheckCircle2, ArrowRight, ChevronDown, Star } from 'lucide-react'
+import { Phone, CheckCircle2, ArrowRight, ChevronDown, Star, Zap } from 'lucide-react'
 
 // ─── FORM ─────────────────────────────────────────────────────────────────────
-function DiagForm({ dark = false }: { dark?: boolean }) {
+function DiagForm() {
   const [sent, setSent] = useState(false)
   if (sent) return (
-    <div className={`rounded-2xl p-8 text-center ${dark ? 'bg-white/10 border border-white/20' : 'bg-green-50 border border-green-200'}`}>
-      <CheckCircle2 className="w-10 h-10 text-green-500 mx-auto mb-3" />
-      <p className={`font-bold ${dark ? 'text-white' : 'text-slate-900'}`}>Demande reçue.</p>
-      <p className={`text-sm mt-1 ${dark ? 'text-slate-400' : 'text-slate-500'}`}>On vous rappelle sous 24h.</p>
+    <div className="rounded-2xl p-8 text-center bg-white/10 border border-white/20">
+      <CheckCircle2 className="w-10 h-10 text-green-400 mx-auto mb-3" />
+      <p className="font-bold text-white text-lg">Demande reçue.</p>
+      <p className="text-blue-200 text-sm mt-1">On vous rappelle sous 24h.</p>
     </div>
   )
-  const inp = dark
-    ? "flex-1 bg-white/10 border border-white/20 hover:border-white/40 rounded-xl px-4 py-3 text-white placeholder-slate-400 text-sm outline-none transition-colors"
-    : "flex-1 bg-white border border-slate-200 hover:border-blue-300 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 text-sm outline-none transition-colors shadow-sm"
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex gap-3">
-        <input placeholder="Prénom" className={inp} />
-        <input placeholder="Email professionnel" className={inp} />
+    <div className="bg-white/10 backdrop-blur border border-white/20 rounded-2xl p-6">
+      <p className="text-white font-black text-sm uppercase tracking-widest text-center mb-1">Recevoir un diagnostic gratuit</p>
+      <p className="text-blue-200 text-xs text-center mb-5">Réponse immédiate · Sans engagement</p>
+      <div className="flex flex-col gap-3">
+        <div className="flex gap-3">
+          <input placeholder="Prénom" className="flex-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-blue-300 text-sm outline-none focus:border-white/50 transition-colors" />
+          <input placeholder="Email" className="flex-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-blue-300 text-sm outline-none focus:border-white/50 transition-colors" />
+        </div>
+        <input placeholder="Téléphone / WhatsApp" className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-blue-300 text-sm outline-none focus:border-white/50 transition-colors" />
+        <button onClick={() => setSent(true)} className="w-full py-4 bg-white text-blue-700 font-black rounded-xl transition-all text-sm tracking-widest uppercase hover:bg-blue-50 shadow-lg">
+          Recevoir mon diagnostic gratuit →
+        </button>
+        <button onClick={() => setSent(true)} className="w-full py-3 border border-white/25 text-white text-sm rounded-xl hover:bg-white/10 transition-all flex items-center justify-center gap-2 font-medium">
+          <Phone className="w-4 h-4" /> On vous rappelle directement
+        </button>
       </div>
-      <input placeholder="Téléphone / WhatsApp" className={`${inp} w-full`} />
-      <button onClick={() => setSent(true)} className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all text-sm tracking-wide shadow-lg shadow-blue-600/30">
-        Recevoir un diagnostic gratuit →
-      </button>
-      <button onClick={() => setSent(true)} className={`w-full py-2.5 text-sm flex items-center justify-center gap-2 rounded-xl border transition-all ${dark ? 'border-white/15 text-slate-300 hover:bg-white/5' : 'border-slate-200 text-slate-600 hover:bg-slate-50'}`}>
-        <Phone className="w-4 h-4" /> On vous rappelle directement
-      </button>
     </div>
   )
 }
 
-// ─── PIPELINE VISUAL ──────────────────────────────────────────────────────────
+// ─── PIPELINE ─────────────────────────────────────────────────────────────────
 function Pipeline() {
   const steps = [
-    { label: 'Leads', sub: 'entrants', color: 'bg-slate-800', border: 'border-slate-700', dot: 'bg-slate-400' },
-    { label: 'Contact', sub: '< 5 minutes', color: 'bg-blue-700', border: 'border-blue-600', dot: 'bg-blue-400' },
-    { label: 'Relances', sub: 'J+1, J+3, J+7', color: 'bg-blue-600', border: 'border-blue-500', dot: 'bg-blue-300' },
-    { label: 'Qualification', sub: 'Tri & scoring', color: 'bg-indigo-600', border: 'border-indigo-500', dot: 'bg-indigo-300' },
-    { label: 'RDV', sub: 'Dans votre agenda', color: 'bg-green-600', border: 'border-green-500', dot: 'bg-green-400' },
+    { label: 'LEADS', sub: 'Générés ou importés', bg: 'bg-blue-900 border-blue-700' },
+    { label: 'CONTACT', sub: '< 5 minutes', bg: 'bg-blue-800 border-blue-600' },
+    { label: 'RELANCES', sub: 'J+1 · J+3 · J+7', bg: 'bg-blue-700 border-blue-500' },
+    { label: 'QUALI.', sub: 'Scoring & tri', bg: 'bg-indigo-700 border-indigo-500' },
+    { label: 'RDV', sub: 'Dans votre agenda', bg: 'bg-green-700 border-green-500' },
   ]
   return (
-    <div className="flex items-center justify-between gap-2 md:gap-0">
-      {steps.map((step, i) => (
-        <div key={step.label} className="flex items-center flex-1 last:flex-none">
-          <div className={`flex flex-col items-center text-center rounded-2xl px-3 py-4 border ${step.color} ${step.border} flex-shrink-0 w-full md:w-auto`}>
-            <div className={`w-3 h-3 rounded-full ${step.dot} mb-2`} />
-            <div className="text-white font-bold text-sm">{step.label}</div>
-            <div className="text-white/60 text-xs mt-0.5">{step.sub}</div>
+    <div className="flex items-center gap-0">
+      {steps.map((s, i) => (
+        <div key={s.label} className="flex items-center flex-1 last:flex-none">
+          <div className={`flex-1 ${s.bg} border rounded-xl py-4 px-3 text-center`}>
+            <div className="text-white font-black text-xs tracking-widest">{s.label}</div>
+            <div className="text-blue-300 text-xs mt-0.5">{s.sub}</div>
           </div>
           {i < steps.length - 1 && (
-            <div className="flex-1 flex items-center justify-center px-1">
-              <ArrowRight className="w-5 h-5 text-slate-500 flex-shrink-0" />
-            </div>
+            <ArrowRight className="w-4 h-4 text-blue-500 flex-shrink-0 mx-1" />
           )}
         </div>
       ))}
@@ -63,97 +61,127 @@ function Pipeline() {
   )
 }
 
-// ─── PAGE ─────────────────────────────────────────────────────────────────────
 export default function Home() {
   return (
-    <div className="bg-white text-slate-800 font-sans overflow-x-hidden">
+    <div className="bg-white text-slate-900 font-sans overflow-x-hidden">
 
-      {/* NAVBAR */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="font-black text-lg text-white tracking-tight">
-            ⚡ Scale<span className="text-blue-400">With</span>Mike
+      {/* ─── NAVBAR ─────────────────────────────────────────────────────── */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a1aff]/95 backdrop-blur-md">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="font-black text-xl text-white tracking-tight">
+            ⚡ Scale<span className="text-blue-200">With</span>Mike
           </div>
-          <div className="hidden md:flex items-center gap-6 text-sm text-slate-400">
-            <a href="#solution" className="hover:text-white transition-colors">Comment ça marche</a>
-            <a href="#preuve" className="hover:text-white transition-colors">Résultats</a>
+          <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-blue-100">
+            <a href="#comment" className="hover:text-white transition-colors">Comment ça marche</a>
+            <a href="#offre" className="hover:text-white transition-colors">L'offre</a>
+            <a href="#resultats" className="hover:text-white transition-colors">Résultats</a>
             <a href="#pricing" className="hover:text-white transition-colors">Tarifs</a>
           </div>
-          <a href="#contact" className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-xl transition-all">
+          <a href="#contact" className="px-5 py-2.5 bg-white text-blue-700 text-sm font-black rounded-xl hover:bg-blue-50 transition-all shadow-lg">
             Diagnostic gratuit
           </a>
         </div>
       </nav>
 
-      {/* HERO */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center pt-20 bg-slate-950 overflow-hidden">
-        {/* Grid overlay */}
-        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)', backgroundSize: '50px 50px' }} />
-        {/* Blue glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full blur-3xl pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(37,99,235,0.18), transparent 70%)' }} />
+      {/* ─── HERO ────────────────────────────────────────────────────────── */}
+      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden"
+        style={{ background: 'linear-gradient(160deg, #0a1aff 0%, #0d22e8 40%, #0818c7 100%)' }}>
 
-        <div className="relative w-full max-w-5xl mx-auto px-6 py-20 text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 text-xs font-semibold tracking-widest uppercase mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-            Call Center externalisé · 100% francophone · Opérationnel en 7 jours
+        {/* Grid */}
+        <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
+        {/* Glow */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-64 blur-3xl pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(255,255,255,0.06), transparent 70%)' }} />
+
+        <div className="relative max-w-6xl mx-auto px-6 py-16 w-full">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+
+            {/* LEFT */}
+            <div>
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 border border-white/20 rounded-full text-white text-xs font-bold tracking-widest uppercase mb-8">
+                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                Call Center B2B · 100% Francophone
+              </div>
+
+              {/* HEADLINE — très grand, uppercase */}
+              <h1 className="text-6xl md:text-7xl font-black leading-[0.95] uppercase mb-6 text-white">
+                On génère<br />
+                <span style={{ color: '#7dd3fc' }}>vos leads</span><br />
+                et les transforme<br />
+                en <span style={{ color: '#fde68a' }}>RDV.</span>
+              </h1>
+
+              <p className="text-blue-100 text-lg mb-8 leading-relaxed max-w-lg">
+                Une équipe dédiée prospecte pour vous, contacte sous 5 minutes
+                et pose des RDV qualifiés dans votre agenda.
+              </p>
+
+              {/* 3 bullets */}
+              <div className="flex flex-col gap-2.5 mb-10">
+                {[
+                  "Génération de leads incluse à partir du plan Growth",
+                  "Contact en moins de 5 minutes · Relances sur 7 jours",
+                  "Uniquement des RDV qualifiés selon vos critères",
+                ].map(b => (
+                  <div key={b} className="flex items-start gap-3 text-sm text-white">
+                    <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span>{b}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Stats */}
+              <div className="flex items-center gap-8 pt-6 border-t border-white/15">
+                {[{ val: '+200', lbl: 'RDV / mois' }, { val: '< 5 min', lbl: 'Temps de contact' }, { val: '7 jours', lbl: 'Pour démarrer' }].map(({ val, lbl }) => (
+                  <div key={lbl}>
+                    <div className="text-2xl font-black text-white">{val}</div>
+                    <div className="text-blue-300 text-xs mt-0.5">{lbl}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT — Form */}
+            <div>
+              <DiagForm />
+            </div>
           </div>
-
-          {/* Headline */}
-          <h1 className="text-5xl md:text-7xl font-black leading-[1.05] mb-6 text-white">
-            On transforme vos leads<br />
-            en <span className="text-blue-400">RDV qualifiés.</span>
-          </h1>
-
-          {/* Subheadline */}
-          <p className="text-xl text-slate-400 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Une équipe dédiée contacte vos prospects, les qualifie et pose des rendez-vous directement dans votre agenda.
-          </p>
-
-          {/* 3 bullets */}
-          <div className="flex flex-wrap justify-center gap-4 mb-10">
-            {[
-              "Réponse en moins de 5 minutes",
-              "Relances multi-canal automatiques",
-              "Uniquement des RDV qualifiés",
-            ].map(b => (
-              <span key={b} className="flex items-center gap-2 text-sm text-white bg-white/8 border border-white/10 rounded-full px-4 py-2">
-                <CheckCircle2 className="w-4 h-4 text-green-400 flex-shrink-0" /> {b}
-              </span>
-            ))}
-          </div>
-
-          {/* Form */}
-          <div className="max-w-xl mx-auto">
-            <DiagForm dark />
-            <p className="text-slate-600 text-xs mt-3">Sans engagement · Réponse sous 24h · 100% confidentiel</p>
-          </div>
-
-          {/* Scroll hint */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-slate-600 animate-bounce">
-            <ChevronDown className="w-5 h-5" />
-          </div>
+        </div>
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/30 animate-bounce">
+          <ChevronDown className="w-6 h-6" />
         </div>
       </section>
 
-      {/* PROBLÈME */}
+      {/* ─── BANDEAU SECTEURS ─────────────────────────────────────────────── */}
+      <div className="bg-slate-900 border-y border-slate-800 py-4">
+        <div className="max-w-5xl mx-auto px-6 flex flex-wrap justify-center gap-6 items-center text-slate-400 text-sm">
+          <span className="text-slate-600 text-xs uppercase tracking-widest font-semibold">Secteurs actifs :</span>
+          {['Industrie & BTP', 'Services B2B', 'Immobilier', 'Tech / SaaS', 'Formation Pro'].map(s => (
+            <span key={s} className="font-medium text-slate-300">{s}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* ─── PROBLÈME ────────────────────────────────────────────────────── */}
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-12">
-            <p className="text-blue-600 text-xs font-bold tracking-widest uppercase mb-3">LE PROBLÈME</p>
-            <h2 className="text-4xl font-black text-slate-900">Vous avez des leads.<br />Mais ils ne deviennent pas des clients.</h2>
+            <p className="text-blue-600 text-xs font-black tracking-widest uppercase mb-3">Le problème</p>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
+              Vous avez du trafic.<br />Mais pas assez de RDV.
+            </h2>
           </div>
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              { icon: "📞", title: "Leads jamais rappelés", desc: "Un lead qui attend plus de 5 minutes a 80% de chances de ne jamais être converti. La plupart de vos leads ne sont jamais rappelés." },
-              { icon: "🔄", title: "Relances oubliées", desc: "Vos commerciaux gèrent trop de choses à la fois. Les relances tombent à l'eau. Des RDV se perdent chaque semaine." },
-              { icon: "😓", title: "Commerciaux débordés", desc: "Vos closers passent 60% de leur temps à prospecter au lieu de closer. C'est une perte directe de chiffre d'affaires." },
-              { icon: "💸", title: "CA qui s'évapore", desc: "Chaque lead non traité = argent perdu. Si vous avez du trafic ou des leads, le problème n'est pas la génération — c'est le traitement." },
+              { icon: '📞', title: 'Leads jamais rappelés', desc: 'Un lead non contacté sous 5 minutes a 80% de chances d\'être perdu. La plupart ne sont jamais rappelés.' },
+              { icon: '🔄', title: 'Relances qui tombent à l'eau', desc: 'Vos commerciaux ont autre chose à faire. Les relances sont oubliées. Des contrats vous échappent chaque semaine.' },
+              { icon: '😓', title: 'Commerciaux qui prospectent au lieu de closer', desc: 'Ils passent 60% de leur temps à qualifier des leads froids. C\'est du CA perdu directement.' },
+              { icon: '💸', title: 'Budget marketing gaspillé', desc: 'Vous payez pour générer des leads que personne ne traite correctement. Le problème est dans le suivi, pas la génération.' },
             ].map(({ icon, title, desc }) => (
-              <div key={title} className="flex gap-4 p-5 bg-slate-50 rounded-2xl border border-slate-200 hover:border-blue-200 transition-colors">
-                <span className="text-2xl flex-shrink-0">{icon}</span>
+              <div key={title} className="flex gap-4 p-6 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-200 hover:bg-blue-50/30 transition-all">
+                <span className="text-3xl flex-shrink-0">{icon}</span>
                 <div>
-                  <h3 className="font-bold text-slate-900 mb-1">{title}</h3>
+                  <h3 className="font-black text-slate-900 mb-1 text-[15px]">{title}</h3>
                   <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
                 </div>
               </div>
@@ -162,53 +190,62 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SOLUTION */}
-      <section id="solution" className="py-20 bg-slate-950">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <p className="text-blue-400 text-xs font-bold tracking-widest uppercase mb-3">LA SOLUTION</p>
-          <h2 className="text-4xl font-black text-white mb-4">Simple. En 3 étapes.</h2>
-          <p className="text-slate-400 mb-14 max-w-xl mx-auto">On s'occupe de tout ce qui se passe entre le lead et le RDV.</p>
+      {/* ─── OFFRE / SOLUTION ────────────────────────────────────────────── */}
+      <section id="comment" className="py-20" style={{ background: 'linear-gradient(160deg, #0a1aff 0%, #0d22e8 60%, #0818c7 100%)' }}>
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="text-center mb-14">
+            <p className="text-blue-200 text-xs font-black tracking-widest uppercase mb-3">La solution</p>
+            <h2 className="text-4xl md:text-5xl font-black text-white leading-tight mb-4 uppercase">
+              On s'occupe de tout.<br />
+              <span style={{ color: '#fde68a' }}>De A à Z.</span>
+            </h2>
+            <p className="text-blue-200 text-lg max-w-xl mx-auto">
+              On génère vos leads, on les contacte et on vous envoie uniquement des RDV qualifiés.
+            </p>
+          </div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-16">
+          {/* 3 étapes */}
+          <div className="grid md:grid-cols-3 gap-5 mb-14">
             {[
-              { num: "01", title: "On reçoit vos leads", desc: "Import CSV, connexion CRM ou formulaire. On intègre vos leads dans notre système en quelques heures.", color: "border-slate-700 bg-slate-900" },
-              { num: "02", title: "On contacte rapidement", desc: "Appel, WhatsApp, email — sous 5 minutes. Relances automatiques sur 7 jours si pas de réponse.", color: "border-blue-700 bg-blue-950" },
-              { num: "03", title: "On vous envoie les RDV", desc: "Uniquement les prospects qualifiés selon vos critères. Le RDV est posé directement dans votre agenda.", color: "border-green-800 bg-green-950" },
-            ].map(({ num, title, desc, color }) => (
-              <div key={num} className={`rounded-2xl p-6 border ${color} text-left`}>
-                <div className="text-5xl font-black text-white/10 mb-4 leading-none">{num}</div>
-                <h3 className="text-white font-bold text-lg mb-2">{title}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">{desc}</p>
+              { num: '01', title: 'On génère vos leads', desc: 'Prospection ciblée via appels sortants, SEO et publicités. Ou on traite vos leads existants. À vous de choisir.', badge: null, color: 'bg-white/10 border-white/20' },
+              { num: '02', title: 'On contacte rapidement', desc: 'Chaque lead est appelé sous 5 minutes. WhatsApp + email en parallèle. Relances automatiques sur 7 jours.', badge: 'PILIER CENTRAL', color: 'bg-white/15 border-white/30' },
+              { num: '03', title: 'On vous envoie les RDV', desc: "Seulement les prospects qui matchent vos critères. RDV posé dans votre agenda. Vous n'avez plus qu'à closer.", badge: null, color: 'bg-white/10 border-white/20' },
+            ].map(({ num, title, desc, badge, color }) => (
+              <div key={num} className={`relative rounded-2xl p-6 border ${color} backdrop-blur-sm`}>
+                {badge && <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-yellow-400 text-slate-900 text-xs font-black rounded-full whitespace-nowrap">{badge}</div>}
+                <div className="text-6xl font-black text-white/8 leading-none mb-4 select-none">{num}</div>
+                <h3 className="text-white font-black text-lg mb-2">{title}</h3>
+                <p className="text-blue-200 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>
 
           {/* Pipeline */}
-          <div className="bg-slate-900 rounded-2xl p-6 border border-slate-800">
-            <p className="text-slate-500 text-xs font-bold tracking-widest uppercase mb-6">PIPELINE VISUEL</p>
+          <div className="bg-black/20 rounded-2xl p-6 border border-white/10">
+            <p className="text-blue-300 text-xs font-black tracking-widest uppercase mb-5 text-center">PIPELINE VISUEL</p>
             <Pipeline />
           </div>
         </div>
       </section>
 
-      {/* PROCESS */}
+      {/* ─── PROCESSUS RAPIDE ─────────────────────────────────────────────── */}
       <section className="py-20 bg-white">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-12">
-            <p className="text-blue-600 text-xs font-bold tracking-widest uppercase mb-3">DÉMARRAGE</p>
+            <p className="text-blue-600 text-xs font-black tracking-widest uppercase mb-3">Démarrage</p>
             <h2 className="text-4xl font-black text-slate-900">Opérationnel en 7 jours.</h2>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-3">
             {[
-              { period: "J 1–3", title: "Setup & configuration", desc: "Brief de votre offre, validation du script, intégration CRM. Votre équipe est configurée.", color: "bg-blue-600" },
-              { period: "J 4–7", title: "Lancement", desc: "Premiers appels envoyés. Premiers leads traités. Premiers RDV dans votre agenda.", color: "bg-indigo-600" },
-              { period: "Semaine 2+", title: "Optimisation continue", desc: "A/B test des scripts, analyse des performances, ajustements. Le flux s'améliore chaque semaine.", color: "bg-green-600" },
-            ].map(({ period, title, desc, color }) => (
-              <div key={period} className="flex gap-5 items-start p-5 bg-slate-50 rounded-2xl border border-slate-200">
-                <div className={`${color} text-white text-xs font-bold px-3 py-2 rounded-xl whitespace-nowrap flex-shrink-0`}>{period}</div>
+              { tag: 'J 1–3', color: 'bg-blue-600', title: 'Setup', desc: 'Brief de votre offre · Validation du script · Intégration CRM · Équipe configurée.' },
+              { tag: 'J 4–7', color: 'bg-indigo-600', title: 'Lancement', desc: 'Premiers appels envoyés · Premiers leads traités · Premiers RDV dans votre agenda.' },
+              { tag: 'Semaine 2+', color: 'bg-green-600', title: 'Optimisation', desc: 'A/B test des scripts · Analyse des KPIs · Le flux s\'améliore chaque semaine.' },
+            ].map(({ tag, color, title, desc }) => (
+              <div key={tag} className="flex items-center gap-5 p-5 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-100 transition-colors">
+                <div className={`${color} text-white text-xs font-black px-3 py-2 rounded-xl whitespace-nowrap flex-shrink-0 min-w-[80px] text-center`}>{tag}</div>
                 <div>
-                  <h3 className="font-bold text-slate-900">{title}</h3>
-                  <p className="text-slate-500 text-sm mt-0.5">{desc}</p>
+                  <span className="font-black text-slate-900">{title} — </span>
+                  <span className="text-slate-500 text-sm">{desc}</span>
                 </div>
               </div>
             ))}
@@ -216,133 +253,157 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PREUVE */}
-      <section id="preuve" className="py-20 bg-slate-50 border-y border-slate-200">
+      {/* ─── RÉSULTATS ────────────────────────────────────────────────────── */}
+      <section id="resultats" className="py-20 bg-slate-50 border-y border-slate-200">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-12">
-            <p className="text-blue-600 text-xs font-bold tracking-widest uppercase mb-3">RÉSULTATS</p>
+            <p className="text-blue-600 text-xs font-black tracking-widest uppercase mb-3">Résultats</p>
             <h2 className="text-4xl font-black text-slate-900">Ce que ça donne, concrètement.</h2>
           </div>
-          <div className="grid md:grid-cols-3 gap-6 mb-10">
+          <div className="grid md:grid-cols-3 gap-5 mb-8">
             {[
-              { sector: "Services B2B", formula: "520 leads → 94 RDV", detail: "6 agents sur 3 mois. Taux de contact 34%. Dont 17 contrats signés.", color: "border-t-yellow-500" },
-              { sector: "Industrie", formula: "380 leads → 61 RDV", detail: "5 agents sur 3 mois. Taux de contact 31%. 11 contrats signés.", color: "border-t-blue-500" },
-              { sector: "Formation Pro", formula: "290 leads → 53 RDV", detail: "5 agents sur 3 mois. Taux de contact 36%. 21 inscrits.", color: "border-t-green-500" },
-            ].map(({ sector, formula, detail, color }) => (
+              { sector: 'Services B2B', result: '520 leads → 94 RDV', detail: '6 agents · 3 mois · 17 contrats signés', color: 'border-t-yellow-400' },
+              { sector: 'Industrie', result: '380 leads → 61 RDV', detail: '5 agents · 3 mois · 11 contrats signés', color: 'border-t-blue-500' },
+              { sector: 'Formation Pro', result: '290 leads → 53 RDV', detail: '5 agents · 3 mois · 21 inscrits', color: 'border-t-green-500' },
+            ].map(({ sector, result, detail, color }) => (
               <div key={sector} className={`bg-white rounded-2xl p-6 border border-slate-200 border-t-4 ${color} shadow-sm`}>
-                <p className="text-slate-500 text-xs font-semibold uppercase tracking-widest mb-2">{sector}</p>
-                <p className="text-xl font-black text-slate-900 mb-3">{formula}</p>
-                <p className="text-slate-500 text-sm leading-relaxed">{detail}</p>
+                <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-3">{sector}</p>
+                <p className="text-2xl font-black text-slate-900 mb-2">{result}</p>
+                <p className="text-slate-500 text-sm">{detail}</p>
               </div>
             ))}
           </div>
-          {/* Stars */}
-          <div className="flex justify-center gap-1 mb-3">
+          <div className="flex justify-center gap-1">
             {[1,2,3,4,5].map(i => <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}
+            <span className="text-slate-400 text-sm ml-2">Recommandé par nos clients</span>
           </div>
-          <p className="text-center text-slate-500 text-sm">"Recommandé par nos clients actifs"</p>
         </div>
       </section>
 
-      {/* PRICING */}
+      {/* ─── PRICING ────────────────────────────────────────────────────── */}
       <section id="pricing" className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <p className="text-blue-600 text-xs font-bold tracking-widest uppercase mb-3">TARIFS</p>
-            <h2 className="text-4xl font-black text-slate-900">Simple. Plus vous scalez,<br /><span className="text-blue-600">moins c'est cher.</span></h2>
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="text-center mb-4">
+            <p className="text-blue-600 text-xs font-black tracking-widest uppercase mb-3">Tarifs</p>
+            <h2 className="text-4xl font-black text-slate-900">
+              Plus vous scalez, moins c'est cher.<br />
+              <span className="text-blue-600">Et on génère vos leads.</span>
+            </h2>
           </div>
+          <p className="text-center text-slate-500 mb-10 max-w-xl mx-auto">À partir du plan Growth, notre équipe prospecte activement pour vous — vous n'avez plus à fournir les leads.</p>
+
           <div className="grid md:grid-cols-3 gap-6 mb-5">
             {[
               {
-                name: "Starter", price: "900€", unit: "/agent/mois",
-                agents: "3 agents min.", total: "= 2 700€ / mois",
-                perks: ["Scripts fournis", "Reporting hebdo", "WhatsApp + Email", "1 responsable inclus"],
-                cta: "Démarrer", highlight: false
+                name: 'STARTER', price: '900€', unit: '/agent/mois', agents: '3 agents min.', total: '= 2 700€ / mois',
+                badge: null, highlight: false,
+                generation: false,
+                perks: ['Traitement de vos leads', 'Scripts fournis & optimisés', 'Reporting hebdomadaire', 'WhatsApp + Email inclus', '1 responsable inclus', 'Intégration CRM incluse'],
               },
               {
-                name: "Growth", price: "850€", unit: "/agent/mois",
-                agents: "5 agents min.", total: "= 4 250€ / mois",
-                perks: ["Tout Starter", "Relances auto", "A/B testing", "Analytics avancés", "Call recording"],
-                cta: "Choisir Growth", highlight: true, badge: "POPULAIRE"
+                name: 'GROWTH', price: '850€', unit: '/agent/mois', agents: '5 agents min.', total: '= 4 250€ / mois',
+                badge: 'POPULAIRE', highlight: true,
+                generation: true,
+                perks: ['Tout Starter', '✦ Génération de leads incluse', 'Relances automatiques', 'A/B testing scripts', 'Analytics avancés', 'Call recording & review'],
               },
               {
-                name: "Scale", price: "800€", unit: "/agent/mois",
-                agents: "10 agents+", total: "= dès 8 000€ / mois",
-                perks: ["Tout Growth", "Équipe dédiée", "Intégration custom", "Account manager", "SLA garanti"],
-                cta: "Nous contacter", highlight: false
+                name: 'SCALE', price: '800€', unit: '/agent/mois', agents: '10 agents+', total: '= dès 8 000€ / mois',
+                badge: null, highlight: false,
+                generation: true,
+                perks: ['Tout Growth', '✦ Génération leads volume+', 'Équipe dédiée multi-secteur', 'Intégration CRM custom', 'Account manager dédié', 'SLA & reporting sur mesure'],
               },
-            ].map(({ name, price, unit, agents, total, perks, cta, highlight, badge }) => (
-              <div key={name} className={`relative rounded-2xl p-6 border ${highlight ? 'bg-blue-600 border-blue-500 shadow-xl shadow-blue-200' : 'bg-white border-slate-200 shadow-sm'}`}>
-                {badge && <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-yellow-400 text-slate-900 text-xs font-black rounded-full">{badge}</div>}
-                <div className={`text-sm font-semibold mb-1 ${highlight ? 'text-blue-200' : 'text-slate-500'}`}>{name}</div>
-                <div className="flex items-end gap-1 mb-0.5">
-                  <span className={`text-4xl font-black ${highlight ? 'text-white' : 'text-slate-900'}`}>{price}</span>
-                  <span className={`text-xs pb-1.5 ${highlight ? 'text-blue-200' : 'text-slate-400'}`}>{unit}</span>
+            ].map(({ name, price, unit, agents, total, badge, highlight, generation, perks }) => (
+              <div key={name} className={`relative rounded-2xl border overflow-hidden ${highlight ? 'shadow-2xl shadow-blue-200 border-blue-500' : 'border-slate-200 shadow-sm'}`}>
+                {/* Top color bar */}
+                <div className={`h-1.5 w-full ${highlight ? 'bg-blue-600' : 'bg-slate-200'}`} />
+                {badge && <div className="absolute top-4 right-4 px-3 py-1 bg-yellow-400 text-slate-900 text-xs font-black rounded-full">{badge}</div>}
+
+                <div className={`p-6 ${highlight ? 'bg-white' : 'bg-white'}`}>
+                  {/* Generation badge */}
+                  {generation && (
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 border border-green-200 rounded-full text-green-700 text-xs font-bold mb-4">
+                      <Zap className="w-3 h-3" /> Génération de leads incluse
+                    </div>
+                  )}
+                  {!generation && <div className="h-7 mb-4" />}
+
+                  <div className={`text-sm font-black tracking-widest uppercase mb-2 ${highlight ? 'text-blue-600' : 'text-slate-400'}`}>{name}</div>
+                  <div className="flex items-end gap-1 mb-0.5">
+                    <span className="text-5xl font-black text-slate-900">{price}</span>
+                    <span className="text-slate-400 text-sm pb-2">{unit}</span>
+                  </div>
+                  <div className="text-slate-400 text-xs mb-1">{agents}</div>
+                  <div className={`text-sm font-bold mb-5 ${highlight ? 'text-blue-700' : 'text-slate-700'}`}>{total}</div>
+
+                  <ul className="space-y-2.5 mb-6">
+                    {perks.map(p => (
+                      <li key={p} className={`flex items-start gap-2 text-sm ${p.startsWith('✦') ? 'text-green-700 font-bold' : 'text-slate-600'}`}>
+                        <CheckCircle2 className={`w-4 h-4 flex-shrink-0 mt-0.5 ${p.startsWith('✦') ? 'text-green-500' : highlight ? 'text-blue-500' : 'text-slate-300'}`} />
+                        {p.replace('✦ ', '')}
+                      </li>
+                    ))}
+                  </ul>
+                  <a href="#contact" className={`block w-full py-3.5 rounded-xl text-sm font-black text-center uppercase tracking-widest transition-all ${highlight ? 'bg-blue-600 text-white hover:bg-blue-500' : 'bg-slate-900 text-white hover:bg-slate-700'}`}>
+                    {highlight ? 'Choisir Growth' : name === 'STARTER' ? 'Démarrer' : 'Nous contacter'}
+                  </a>
                 </div>
-                <div className={`text-xs mb-1 ${highlight ? 'text-blue-200' : 'text-slate-400'}`}>{agents}</div>
-                <div className={`text-sm font-bold mb-5 ${highlight ? 'text-white' : 'text-slate-700'}`}>{total}</div>
-                <ul className="space-y-2 mb-6">
-                  {perks.map(p => (
-                    <li key={p} className={`flex items-center gap-2 text-sm ${highlight ? 'text-blue-100' : 'text-slate-600'}`}>
-                      <CheckCircle2 className={`w-4 h-4 flex-shrink-0 ${highlight ? 'text-yellow-300' : 'text-green-500'}`} />{p}
-                    </li>
-                  ))}
-                </ul>
-                <a href="#contact" className={`block w-full py-3 rounded-xl text-sm font-bold text-center transition-all ${highlight ? 'bg-white text-blue-700 hover:bg-blue-50' : 'bg-blue-600 text-white hover:bg-blue-500'}`}>{cta}</a>
               </div>
             ))}
           </div>
-          <p className="text-center text-sm text-slate-500 border border-blue-100 bg-blue-50 rounded-xl px-4 py-3">
-            💡 <strong className="text-slate-700">Logiciel téléphonique à la charge du client.</strong> Intégration CRM incluse. Engagement minimum 3 mois.
-          </p>
 
-          {/* Upsell dashboard */}
-          <div className="mt-6 rounded-2xl p-6 border border-cyan-200 bg-cyan-50 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="rounded-xl px-5 py-4 bg-blue-50 border border-blue-100 text-sm text-blue-800 text-center">
+            💡 <strong>Logiciel téléphonique à la charge du client.</strong> Intégration CRM incluse dans tous les plans. Engagement minimum 3 mois.
+          </div>
+
+          {/* Upsell */}
+          <div className="mt-5 rounded-2xl p-6 bg-slate-900 text-white flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
-              <div className="text-xs font-bold text-cyan-700 tracking-widest uppercase mb-1">OPTION</div>
-              <h3 className="text-slate-900 font-black text-lg mb-1">Dashboard CRM en temps réel</h3>
-              <p className="text-slate-600 text-sm max-w-md">Suivez leads traités, performance par agent, taux de contact et ROI. Vision claire de chaque euro investi.</p>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-cyan-500/20 border border-cyan-500/30 rounded-full text-cyan-400 text-xs font-bold mb-3">⚡ Option complémentaire</div>
+              <h3 className="font-black text-xl mb-1">Dashboard CRM en temps réel</h3>
+              <p className="text-slate-400 text-sm">Leads traités · Perf par agent · Taux de contact · ROI en direct. Vision claire de chaque euro investi.</p>
             </div>
-            <div className="text-center flex-shrink-0">
-              <div className="text-3xl font-black text-slate-900">+200€<span className="text-base font-normal text-slate-500">/mois</span></div>
-              <a href="#contact" className="mt-2 block px-5 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-bold rounded-xl transition-all">Activer le dashboard</a>
+            <div className="flex-shrink-0 text-center">
+              <div className="text-4xl font-black text-white">+200€<span className="text-slate-400 text-base font-normal">/mois</span></div>
+              <a href="#contact" className="mt-2 block px-5 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-white text-sm font-black rounded-xl transition-all">Activer le dashboard</a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA FINAL */}
-      <section id="contact" className="py-24 bg-slate-950">
+      {/* ─── CTA FINAL ───────────────────────────────────────────────────── */}
+      <section id="contact" className="py-24" style={{ background: 'linear-gradient(160deg, #0a1aff 0%, #0d22e8 50%, #0818c7 100%)' }}>
         <div className="max-w-xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-black text-white mb-3">
-            Prêt à remplir votre agenda ?
+          <div className="flex justify-center gap-1 mb-6">
+            {[1,2,3,4,5].map(i => <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}
+          </div>
+          <h2 className="text-4xl md:text-5xl font-black text-white uppercase mb-4 leading-tight">
+            Prêt à remplir<br />votre agenda ?
           </h2>
-          <p className="text-slate-400 mb-8">
-            Sans engagement. On vous rappelle sous 24h.
+          <p className="text-blue-200 mb-8">
+            Sans engagement. Diagnostic gratuit. On vous rappelle sous 24h.
           </p>
-          <DiagForm dark />
-          <div className="flex flex-wrap justify-center gap-5 mt-6 text-xs text-slate-600">
-            {["Sans engagement", "Démarrage en 7 jours", "Équipe 100% francophone"].map(g => (
-              <span key={g} className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-green-500" />{g}</span>
+          <DiagForm />
+          <div className="flex flex-wrap justify-center gap-5 mt-6 text-xs text-blue-300">
+            {['Sans engagement', 'Démarrage en 7 jours', 'Équipe 100% francophone'].map(g => (
+              <span key={g} className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />{g}</span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="border-t border-slate-800 py-8 bg-slate-950">
-        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-slate-600">
-          <div className="font-black text-white">⚡ ScaleWithMike</div>
+      {/* ─── FOOTER ──────────────────────────────────────────────────────── */}
+      <footer className="border-t border-slate-200 py-8 bg-white">
+        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-slate-400">
+          <div className="font-black text-slate-900">⚡ ScaleWithMike</div>
           <div className="flex gap-6">
-            <a href="#solution" className="hover:text-white transition-colors">Méthode</a>
-            <a href="#preuve" className="hover:text-white transition-colors">Résultats</a>
-            <a href="#pricing" className="hover:text-white transition-colors">Tarifs</a>
-            <Link href="/dashboard" className="hover:text-white transition-colors">CRM</Link>
+            <a href="#comment" className="hover:text-blue-600 transition-colors">Méthode</a>
+            <a href="#resultats" className="hover:text-blue-600 transition-colors">Résultats</a>
+            <a href="#pricing" className="hover:text-blue-600 transition-colors">Tarifs</a>
+            <Link href="/dashboard" className="hover:text-blue-600 transition-colors">CRM</Link>
           </div>
-          <div className="text-xs text-slate-700">m.simono@groupe-fc.com · © 2026</div>
+          <div className="text-xs">m.simono@groupe-fc.com · © 2026</div>
         </div>
       </footer>
-
     </div>
   )
 }
