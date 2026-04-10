@@ -5,31 +5,40 @@ import Link from 'next/link'
 import { Phone, CheckCircle2, ArrowRight, ChevronDown, Star, Zap } from 'lucide-react'
 
 // ─── FORM ─────────────────────────────────────────────────────────────────────
-function DiagForm() {
+function DiagForm({ dark = false }: { dark?: boolean }) {
   const [sent, setSent] = useState(false)
   if (sent) return (
-    <div className="rounded-2xl p-8 text-center bg-white/10 border border-white/20">
-      <CheckCircle2 className="w-10 h-10 text-green-400 mx-auto mb-3" />
-      <p className="font-bold text-white text-lg">Demande reçue.</p>
-      <p className="text-blue-200 text-sm mt-1">On vous rappelle sous 24h.</p>
+    <div className="rounded-2xl p-8 text-center bg-white border border-slate-200 shadow-xl">
+      <CheckCircle2 className="w-10 h-10 text-green-500 mx-auto mb-3" />
+      <p className="font-black text-slate-900 text-lg">Demande reçue !</p>
+      <p className="text-slate-500 text-sm mt-1">On vous rappelle sous 24h.</p>
     </div>
   )
   return (
-    <div className="bg-white/10 backdrop-blur border border-white/20 rounded-2xl p-6">
-      <p className="text-white font-black text-sm uppercase tracking-widest text-center mb-1">Recevoir un diagnostic gratuit</p>
-      <p className="text-blue-200 text-xs text-center mb-5">Réponse immédiate · Sans engagement</p>
+    <div className="bg-white rounded-2xl p-7 shadow-2xl border border-slate-100">
+      <div className="mb-5">
+        <p className="font-black text-slate-900 text-base uppercase tracking-widest text-center mb-1">Recevoir un diagnostic gratuit</p>
+        <p className="text-slate-400 text-xs text-center">Réponse immédiate · Sans engagement · 100% gratuit</p>
+      </div>
       <div className="flex flex-col gap-3">
         <div className="flex gap-3">
-          <input placeholder="Prénom" className="flex-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-blue-300 text-sm outline-none focus:border-white/50 transition-colors" />
-          <input placeholder="Email" className="flex-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-blue-300 text-sm outline-none focus:border-white/50 transition-colors" />
+          <input placeholder="Prénom" className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
+          <input placeholder="Email" className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
         </div>
-        <input placeholder="Téléphone / WhatsApp" className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-blue-300 text-sm outline-none focus:border-white/50 transition-colors" />
-        <button onClick={() => setSent(true)} className="w-full py-4 bg-white text-blue-700 font-black rounded-xl transition-all text-sm tracking-widest uppercase hover:bg-blue-50 shadow-lg">
+        <input placeholder="Téléphone / WhatsApp" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all" />
+        <button onClick={() => setSent(true)}
+          className="w-full py-4 font-black rounded-xl transition-all text-sm tracking-widest uppercase shadow-lg hover:opacity-90"
+          style={{ background: '#0a1aff', color: '#fde68a' }}>
           Recevoir mon diagnostic gratuit →
         </button>
-        <button onClick={() => setSent(true)} className="w-full py-3 border border-white/25 text-white text-sm rounded-xl hover:bg-white/10 transition-all flex items-center justify-center gap-2 font-medium">
-          <Phone className="w-4 h-4" /> On vous rappelle directement
+        <button onClick={() => setSent(true)} className="w-full py-3 border border-slate-200 text-slate-600 text-sm rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2 font-semibold">
+          <Phone className="w-4 h-4 text-blue-600" /> On vous rappelle directement
         </button>
+      </div>
+      <div className="flex justify-center gap-4 mt-4 text-xs text-slate-400">
+        {['🔒 Données sécurisées', '⚡ Réponse < 24h', '✓ Sans engagement'].map(t => (
+          <span key={t}>{t}</span>
+        ))}
       </div>
     </div>
   )
@@ -66,7 +75,7 @@ export default function Home() {
     <div className="bg-white text-slate-900 font-sans overflow-x-hidden">
 
       {/* ─── NAVBAR ─────────────────────────────────────────────────────── */}
-      <nav className="fixed top-0 left-0 right-0 z-50" style={{ background: '#0a1aff', borderBottom: '1px solid rgba(255,255,255,0.12)' }}>
+      <nav className="fixed top-0 left-0 right-0 z-50" style={{ background: '#050b2e', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2.5">
@@ -94,57 +103,65 @@ export default function Home() {
 
       {/* ─── HERO ────────────────────────────────────────────────────────── */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden"
-        style={{ background: 'linear-gradient(160deg, #0a1aff 0%, #0d22e8 40%, #0818c7 100%)' }}>
+        style={{ background: 'linear-gradient(150deg, #050b2e 0%, #071244 40%, #091a6a 100%)' }}>
 
-        {/* Grid */}
-        <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
-        {/* Glow */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-64 blur-3xl pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(255,255,255,0.06), transparent 70%)' }} />
+        {/* Subtle dot grid */}
+        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+        {/* Blue glow bottom left */}
+        <div className="absolute bottom-0 left-0 w-[600px] h-[400px] blur-3xl pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(10,26,255,0.35), transparent 70%)' }} />
+        {/* Accent glow top right */}
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] blur-3xl pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(6,182,212,0.12), transparent 70%)' }} />
 
         <div className="relative max-w-6xl mx-auto px-6 py-16 w-full">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
 
             {/* LEFT */}
             <div>
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 border border-white/20 rounded-full text-white text-xs font-bold tracking-widest uppercase mb-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-black tracking-widest uppercase mb-8 border"
+                style={{ background: 'rgba(10,26,255,0.3)', borderColor: 'rgba(10,26,255,0.6)', color: '#93c5fd' }}>
                 <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                 Call Center B2B · 100% Francophone
               </div>
 
-              {/* HEADLINE — très grand, uppercase */}
-              <h1 className="text-6xl md:text-7xl font-black leading-[0.95] uppercase mb-6 text-white">
+              {/* HEADLINE */}
+              <h1 className="font-black leading-[1.0] uppercase mb-6 text-white"
+                style={{ fontSize: 'clamp(2.8rem, 6vw, 5rem)' }}>
                 On génère<br />
-                <span style={{ color: '#7dd3fc' }}>vos leads</span><br />
+                <span style={{ color: '#fde68a' }}>vos leads</span><br />
                 et les transforme<br />
-                en <span style={{ color: '#fde68a' }}>RDV.</span>
+                en <span style={{ color: '#34d399' }}>RDV.</span>
               </h1>
 
-              <p className="text-blue-100 text-lg mb-8 leading-relaxed max-w-lg">
+              <p className="text-white/75 text-lg mb-8 leading-relaxed max-w-md">
                 Une équipe dédiée prospecte pour vous, contacte sous 5 minutes
-                et pose des RDV qualifiés dans votre agenda.
+                et pose des RDV qualifiés directement dans votre agenda.
               </p>
 
               {/* 3 bullets */}
-              <div className="flex flex-col gap-2.5 mb-10">
+              <div className="flex flex-col gap-3 mb-10">
                 {[
-                  "Génération de leads incluse à partir du plan Growth",
-                  "Contact en moins de 5 minutes · Relances sur 7 jours",
-                  "Uniquement des RDV qualifiés selon vos critères",
+                  { icon: '⚡', text: 'Génération de leads incluse à partir du plan Growth' },
+                  { icon: '📞', text: 'Contact en moins de 5 minutes · Relances sur 7 jours' },
+                  { icon: '✅', text: 'Uniquement des RDV qualifiés selon vos critères' },
                 ].map(b => (
-                  <div key={b} className="flex items-start gap-3 text-sm text-white">
-                    <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                    <span>{b}</span>
+                  <div key={b.text} className="flex items-center gap-3 text-sm text-white/90">
+                    <span className="text-base leading-none">{b.icon}</span>
+                    <span>{b.text}</span>
                   </div>
                 ))}
               </div>
 
               {/* Stats */}
-              <div className="flex items-center gap-8 pt-6 border-t border-white/15">
-                {[{ val: '+200', lbl: 'RDV / mois' }, { val: '< 5 min', lbl: 'Temps de contact' }, { val: '7 jours', lbl: 'Pour démarrer' }].map(({ val, lbl }) => (
+              <div className="flex items-center gap-8 pt-6 border-t" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+                {[
+                  { val: '+200', lbl: 'RDV / mois', c: '#fde68a' },
+                  { val: '< 5 min', lbl: 'Temps de contact', c: '#34d399' },
+                  { val: '7 jours', lbl: 'Pour démarrer', c: '#93c5fd' },
+                ].map(({ val, lbl, c }) => (
                   <div key={lbl}>
-                    <div className="text-2xl font-black text-white">{val}</div>
-                    <div className="text-blue-300 text-xs mt-0.5">{lbl}</div>
+                    <div className="text-2xl font-black" style={{ color: c }}>{val}</div>
+                    <div className="text-white/50 text-xs mt-0.5">{lbl}</div>
                   </div>
                 ))}
               </div>
@@ -200,15 +217,15 @@ export default function Home() {
       </section>
 
       {/* ─── OFFRE / SOLUTION ────────────────────────────────────────────── */}
-      <section id="comment" className="py-20" style={{ background: 'linear-gradient(160deg, #0a1aff 0%, #0d22e8 60%, #0818c7 100%)' }}>
+      <section id="comment" className="py-20" style={{ background: 'linear-gradient(150deg, #050b2e 0%, #071244 50%, #091a6a 100%)' }}>
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-14">
-            <p className="text-blue-200 text-xs font-black tracking-widest uppercase mb-3">La solution</p>
-            <h2 className="text-4xl md:text-5xl font-black text-white leading-tight mb-4 uppercase">
-              On s'occupe de tout.<br />
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black tracking-widest uppercase mb-5 border" style={{ background: 'rgba(10,26,255,0.3)', borderColor: 'rgba(10,26,255,0.6)', color: '#93c5fd' }}>La solution</div>
+            <h2 className="text-3xl md:text-5xl font-black text-white leading-tight mb-4">
+              On s&apos;occupe de tout.<br />
               <span style={{ color: '#fde68a' }}>De A à Z.</span>
             </h2>
-            <p className="text-blue-200 text-lg max-w-xl mx-auto">
+            <p className="text-white/60 text-lg max-w-xl mx-auto">
               On génère vos leads, on les contacte et on vous envoie uniquement des RDV qualifiés.
             </p>
           </div>
@@ -494,7 +511,7 @@ export default function Home() {
       </section>
 
       {/* ─── CTA FINAL ───────────────────────────────────────────────────── */}
-      <section id="contact" className="py-24" style={{ background: 'linear-gradient(160deg, #0a1aff 0%, #0d22e8 50%, #0818c7 100%)' }}>
+      <section id="contact" className="py-24" style={{ background: 'linear-gradient(150deg, #050b2e 0%, #071244 50%, #091a6a 100%)' }}>
         <div className="max-w-xl mx-auto px-6 text-center">
           <div className="flex justify-center gap-1 mb-6">
             {[1,2,3,4,5].map(i => <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}
