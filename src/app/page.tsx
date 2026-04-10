@@ -66,19 +66,28 @@ export default function Home() {
     <div className="bg-white text-slate-900 font-sans overflow-x-hidden">
 
       {/* ─── NAVBAR ─────────────────────────────────────────────────────── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a1aff]/95 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="font-black text-xl text-white tracking-tight">
-            ⚡ Scale<span className="text-blue-200">With</span>Mike
+      <nav className="fixed top-0 left-0 right-0 z-50" style={{ background: '#0a1aff', borderBottom: '1px solid rgba(255,255,255,0.12)' }}>
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center text-base">⚡</div>
+            <span className="font-black text-white text-lg tracking-tight">
+              Scale<span className="text-yellow-300">With</span>Mike
+            </span>
           </div>
-          <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-blue-100">
-            <a href="#comment" className="hover:text-white transition-colors">Comment ça marche</a>
-            <a href="#offre" className="hover:text-white transition-colors">L'offre</a>
-            <a href="#resultats" className="hover:text-white transition-colors">Résultats</a>
-            <a href="#pricing" className="hover:text-white transition-colors">Tarifs</a>
+          {/* Nav links */}
+          <div className="hidden md:flex items-center gap-8">
+            {[['#comment', 'Méthode'], ['#offre', "L'offre"], ['#resultats', 'Résultats'], ['#pricing', 'Tarifs']].map(([href, label]) => (
+              <a key={href} href={href} className="text-xs font-black tracking-widest uppercase text-white/70 hover:text-white transition-colors">
+                {label}
+              </a>
+            ))}
           </div>
-          <a href="#contact" className="px-5 py-2.5 bg-white text-blue-700 text-sm font-black rounded-xl hover:bg-blue-50 transition-all shadow-lg">
-            Diagnostic gratuit
+          {/* CTA */}
+          <a href="#contact"
+            className="flex items-center gap-2 px-5 py-2.5 font-black text-xs tracking-widest uppercase rounded-xl transition-all shadow-lg"
+            style={{ background: '#fde68a', color: '#0a1aff' }}>
+            <Phone className="w-3.5 h-3.5" /> Diagnostic gratuit
           </a>
         </div>
       </nav>
@@ -355,18 +364,132 @@ export default function Home() {
             💡 <strong>Logiciel téléphonique à la charge du client.</strong> Intégration CRM incluse dans tous les plans. Engagement minimum 3 mois.
           </div>
 
-          {/* Upsell */}
-          <div className="mt-5 rounded-2xl p-6 bg-slate-900 text-white flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-cyan-500/20 border border-cyan-500/30 rounded-full text-cyan-400 text-xs font-bold mb-3">⚡ Option complémentaire</div>
-              <h3 className="font-black text-xl mb-1">Dashboard CRM en temps réel</h3>
-              <p className="text-slate-400 text-sm">Leads traités · Perf par agent · Taux de contact · ROI en direct. Vision claire de chaque euro investi.</p>
+        </div>
+      </section>
+
+      {/* ─── DASHBOARD UPSELL ─────────────────────────────────────────────── */}
+      <section className="py-24 bg-slate-950 text-white overflow-hidden">
+        <div className="max-w-6xl mx-auto px-6">
+
+          {/* Header */}
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/15 border border-cyan-500/25 rounded-full text-cyan-400 text-xs font-black tracking-widest uppercase mb-6">
+              <Zap className="w-3 h-3" /> Option complémentaire — +200€/mois
             </div>
-            <div className="flex-shrink-0 text-center">
-              <div className="text-4xl font-black text-white">+200€<span className="text-slate-400 text-base font-normal">/mois</span></div>
-              <a href="#contact" className="mt-2 block px-5 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-white text-sm font-black rounded-xl transition-all">Activer le dashboard</a>
+            <h2 className="text-4xl md:text-5xl font-black uppercase leading-tight mb-4">
+              Ne perdez plus<br />
+              <span className="text-cyan-400">aucun lead.</span>
+            </h2>
+            <p className="text-slate-400 text-lg max-w-xl mx-auto">
+              Un dashboard CRM pensé pour les équipes call center. Chaque lead tracké, chaque agent suivi, chaque euro mesuré.
+            </p>
+          </div>
+
+          {/* 4 avantages */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
+            {[
+              { icon: '🎯', title: 'Zéro lead perdu', desc: 'Chaque contact est loggé automatiquement. Aucun lead ne tombe dans le vide.' },
+              { icon: '📊', title: 'Pipeline visuel', desc: 'Vue kanban en temps réel. Voyez où en est chaque prospect en un coup d\'oeil.' },
+              { icon: '⚡', title: 'Productivité maximale', desc: 'Vos agents savent exactement quoi faire à chaque instant. Fini le chaos.' },
+              { icon: '💰', title: 'ROI transparent', desc: 'Coût par RDV, taux de contact, CA généré. Chaque euro est visible et justifié.' },
+            ].map(({ icon, title, desc }) => (
+              <div key={title} className="rounded-2xl p-5 border border-slate-800 bg-slate-900 hover:border-cyan-500/40 hover:bg-slate-800/60 transition-all group">
+                <div className="text-3xl mb-3">{icon}</div>
+                <h3 className="font-black text-white mb-2 text-[15px] group-hover:text-cyan-400 transition-colors">{title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Mockup pipeline CRM */}
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 overflow-hidden mb-10">
+            {/* Topbar */}
+            <div className="flex items-center justify-between px-5 py-3 border-b border-slate-800 bg-slate-950">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500/70" />
+                <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
+                <div className="w-3 h-3 rounded-full bg-green-500/70" />
+                <span className="ml-3 text-slate-500 text-xs font-mono">ScaleWithMike · CRM Pipeline</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-slate-600">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse inline-block" />
+                Live
+              </div>
+            </div>
+            {/* Kanban columns */}
+            <div className="p-5 overflow-x-auto">
+              <div className="flex gap-4 min-w-[700px]">
+                {[
+                  { label: 'NOUVEAUX LEADS', color: 'border-blue-500/50 bg-blue-500/5', dot: 'bg-blue-400', count: 12, cards: [
+                    { name: 'Thomas M.', co: 'BTP Rhône', tag: 'Chaud', tagC: 'bg-orange-500/20 text-orange-400' },
+                    { name: 'Sarah L.', co: 'SaaS Paris', tag: 'Nouveau', tagC: 'bg-blue-500/20 text-blue-400' },
+                    { name: 'Marc D.', co: 'Immo Lyon', tag: 'Urgent', tagC: 'bg-red-500/20 text-red-400' },
+                  ]},
+                  { label: 'EN CONTACT', color: 'border-yellow-500/50 bg-yellow-500/5', dot: 'bg-yellow-400', count: 8, cards: [
+                    { name: 'Julie R.', co: 'Formation Pro', tag: 'Rappel J+1', tagC: 'bg-yellow-500/20 text-yellow-400' },
+                    { name: 'Pierre V.', co: 'Industrie Est', tag: 'Envoyé', tagC: 'bg-slate-500/20 text-slate-400' },
+                  ]},
+                  { label: 'QUALIFICATION', color: 'border-purple-500/50 bg-purple-500/5', dot: 'bg-purple-400', count: 5, cards: [
+                    { name: 'Anna K.', co: 'Tech B2B', tag: 'Score 8/10', tagC: 'bg-purple-500/20 text-purple-400' },
+                    { name: 'Romain C.', co: 'Services', tag: 'En cours', tagC: 'bg-slate-500/20 text-slate-400' },
+                  ]},
+                  { label: 'RDV POSÉS', color: 'border-green-500/50 bg-green-500/5', dot: 'bg-green-400', count: 7, cards: [
+                    { name: 'Léa B.', co: 'Retail Sud', tag: '✓ Confirmé', tagC: 'bg-green-500/20 text-green-400' },
+                    { name: 'Hugo P.', co: 'Logistique', tag: '✓ Lundi 14h', tagC: 'bg-green-500/20 text-green-400' },
+                  ]},
+                ].map(col => (
+                  <div key={col.label} className={`flex-1 rounded-xl border ${col.color} p-3`}>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className={`w-2 h-2 rounded-full ${col.dot}`} />
+                        <span className="text-[10px] font-black tracking-widest text-slate-400 uppercase">{col.label}</span>
+                      </div>
+                      <span className="text-[10px] bg-slate-800 text-slate-400 rounded-full px-2 py-0.5 font-bold">{col.count}</span>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      {col.cards.map(card => (
+                        <div key={card.name} className="bg-slate-800/80 rounded-lg p-2.5 border border-slate-700/50">
+                          <div className="flex items-start justify-between gap-1 mb-1">
+                            <span className="text-white text-xs font-bold leading-tight">{card.name}</span>
+                            <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${card.tagC}`}>{card.tag}</span>
+                          </div>
+                          <span className="text-slate-500 text-[10px]">{card.co}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Stats bar */}
+            <div className="grid grid-cols-4 divide-x divide-slate-800 border-t border-slate-800">
+              {[
+                { val: '32', lbl: 'Leads actifs', c: 'text-white' },
+                { val: '87%', lbl: 'Taux de contact', c: 'text-green-400' },
+                { val: '7', lbl: 'RDV ce mois', c: 'text-cyan-400' },
+                { val: '4.2€', lbl: 'Coût / RDV', c: 'text-yellow-400' },
+              ].map(s => (
+                <div key={s.lbl} className="py-3 text-center">
+                  <div className={`text-lg font-black ${s.c}`}>{s.val}</div>
+                  <div className="text-slate-600 text-[10px] mt-0.5">{s.lbl}</div>
+                </div>
+              ))}
             </div>
           </div>
+
+          {/* CTA */}
+          <div className="text-center">
+            <div className="inline-flex flex-col items-center gap-4">
+              <div className="text-4xl font-black text-white">+200€<span className="text-slate-500 text-lg font-normal">/mois</span></div>
+              <a href="#contact"
+                className="flex items-center gap-2 px-8 py-4 font-black text-sm tracking-widest uppercase rounded-xl transition-all shadow-lg"
+                style={{ background: '#06b6d4', color: '#fff' }}>
+                <Zap className="w-4 h-4" /> Activer mon dashboard CRM
+              </a>
+              <p className="text-slate-600 text-xs">Intégré à votre plan · Déploiement en 24h</p>
+            </div>
+          </div>
+
         </div>
       </section>
 
