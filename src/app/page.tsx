@@ -261,7 +261,7 @@ export default function Home() {
                 num: '03', icon: <CheckCircle2 className="w-6 h-6" />, label: 'CLOSER',
                 title: 'Qualification & prise de RDV',
                 desc: "Chaque prospect est qualifié selon vos critères. Seuls les RDV chauds arrivent dans votre agenda.",
-                points: ['Script de qualification custom', 'RDV sur votre agenda', 'Suivi jusqu'au signing'],
+                points: ['Script de qualification custom', 'RDV sur votre agenda', "Suivi jusqu'au signing"],
                 color: 'from-cyan-600 to-cyan-800'
               },
             ].map(({ num, icon, label, title, desc, points, color, badge }) => (
