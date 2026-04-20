@@ -105,7 +105,7 @@ export default function LeadsPage() {
 
   const filtered = leads.filter(l => {
     const matchSearch = [l.prenom, l.nom, l.email, l.telephone].some(v =>
-      v.toLowerCase().includes(searchTerm.toLowerCase()))
+      (v || '').toLowerCase().includes(searchTerm.toLowerCase()))
     return matchSearch &&
       (statusFilter === 'all' || l.status === statusFilter) &&
       (sourceFilter === 'all' || l.source === sourceFilter)
@@ -232,7 +232,7 @@ export default function LeadsPage() {
                 <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 sm:px-6 py-4 sm:py-5 text-white">
                   <div className="flex items-start sm:items-center gap-3 sm:gap-4">
                     <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white/20 flex items-center justify-center text-base sm:text-xl font-black flex-shrink-0">
-                      {selectedLead.prenom[0]}{selectedLead.nom?.[0] || ''}
+                      {(selectedLead.prenom || '?')[0]}{(selectedLead.nom || '')[0] || ''}
                     </div>
                     <div className="flex-1 min-w-0">
                       <h2 className="text-base sm:text-xl font-bold truncate">{selectedLead.prenom} {selectedLead.nom}</h2>
