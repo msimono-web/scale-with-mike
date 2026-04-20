@@ -434,7 +434,7 @@ function AudioCard({ agent }: { agent: typeof agentsAudio[0] }) {
 
 function AudioSection() {
   return (
-    <section className="py-20 bg-gray-950 border-t border-white/10">
+    <section id="audio-agents" className="py-20 bg-gray-950 border-t border-white/10">
       <div className="max-w-5xl mx-auto px-6">
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-5">
@@ -600,6 +600,13 @@ export default function Home() {
                   À partir de <span className="text-lg sm:text-xl font-black text-amber-300">800€/mois</span> — un agent qui appelle du matin au soir pour vous !
                 </span>
                 <ArrowRight className="w-4 h-4 flex-shrink-0 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+              </a>
+
+              {/* Bouton écouter les agents */}
+              <a href="#audio-agents" className="group inline-flex items-center gap-2.5 px-5 py-3 mb-8 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-emerald-400/30 text-white/80 hover:text-white transition-all duration-300 w-fit cursor-pointer">
+                <Headphones className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
+                <span className="text-sm font-semibold">Écoutez vos futurs agents !</span>
+                <ChevronDown className="w-4 h-4 text-emerald-400 animate-bounce" />
               </a>
 
               {/* Badges */}
