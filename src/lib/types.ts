@@ -40,6 +40,18 @@ export interface LeadAction {
   agentId: string;
 }
 
+export type ReminderType = "appel" | "email" | "relance" | "rdv" | "autre";
+
+export interface LeadReminder {
+  id: string;
+  type: ReminderType;
+  label: string;
+  date: string; // ISO date "2026-04-15"
+  heure: string; // "14:30"
+  done: boolean;
+  agentId: string;
+}
+
 export interface Lead {
   id: string;
   prenom: string;
@@ -57,6 +69,7 @@ export interface Lead {
   derniereAction: string; // ISO
   notes: string;
   historique: LeadAction[];
+  rappels?: LeadReminder[];
 }
 
 // ─── Agent ────────────────────────────────────────────────────────────────────
@@ -166,6 +179,30 @@ export interface LandingPage {
   formulaires: number;
   leadsQualifies: number;
   tauxConversion: number;
+}
+
+// ─── Espace Client (White Label) ──────────────────────────────────────────────
+
+export interface ClientSpace {
+  id: string
+  slug: string            // URL: /client/[slug]
+  companyName: string     // Nom de l'entreprise
+  activity: string        // Secteur / activité
+  description: string     // Description (min 150 chars)
+  primaryColor: string    // Couleur principale hex (#3b82f6)
+  secondaryColor: string  // Couleur secondaire hex (#10b981)
+  logoUrl: string         // Base64 ou URL du logo
+  heroTitle: string       // Titre héro LP
+  heroSubtitle: string    // Sous-titre héro LP
+  ctaText: string         // Texte du bouton CTA
+  calendlyUrl: string     // Lien Calendly
+  createdAt: string       // ISO date
+  // Accès privé
+  passwordHash?: string   // SHA-256 du mot de passe client
+  allowedEmails?: string  // Emails autorisés Google (séparés par virgule)
+  // Domaine custom
+  customDomain?: string   // Ex: crm.techcorp.fr
+  vercelDomainId?: string // ID retourné par l'API Vercel
 }
 
 // ─── Charts helpers ───────────────────────────────────────────────────────────

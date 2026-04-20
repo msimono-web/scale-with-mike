@@ -1,5 +1,8 @@
+'use client'
+
 import { Sidebar } from '@/components/layout/Sidebar'
 import { Header } from '@/components/layout/Header'
+import { DashboardSettingsProvider } from '@/lib/dashboard-settings'
 
 export default function DashboardLayout({
   children,
@@ -7,21 +10,18 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen">
-      {/* Banner Demo */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white text-center text-xs py-1 fixed top-0 left-0 right-0 z-50">
-        MODE DEMO — Données fictives pour présentation
+    <DashboardSettingsProvider>
+      <div className="min-h-screen">
+        <Sidebar />
+        <Header />
+
+        {/* Content Area */}
+        <main className="md:ml-[220px] pt-14 min-h-screen bg-slate-50 pb-8">
+          <div className="p-3 sm:p-6">
+            {children}
+          </div>
+        </main>
       </div>
-
-      <Sidebar />
-      <Header />
-
-      {/* Content Area */}
-      <main className="ml-[220px] pt-[84px] min-h-screen bg-slate-50 pb-8">
-        <div className="p-6">
-          {children}
-        </div>
-      </main>
-    </div>
+    </DashboardSettingsProvider>
   )
 }

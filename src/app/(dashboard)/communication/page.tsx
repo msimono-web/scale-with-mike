@@ -3,193 +3,173 @@
 import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { Badge } from '@/components/ui/badge'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { templates, messageHistory, leads } from '@/lib/data'
-import type { TemplateType, Template } from '@/lib/types'
-import { Plus, Edit2 } from 'lucide-react'
+import { Plus, Edit2, MessageSquare, Mail, Smartphone } from 'lucide-react'
+
+type TemplateType = 'whatsapp' | 'email' | 'sms'
+
+interface Template {
+  id: string
+  nom: string
+  sujet?: string
+  contenu: string
+  variables: string[]
+  type: TemplateType
+}
+
+const DEFAULT_VARIABLES = ['{prénom}', '{entreprise}', '{secteur}', '{advisor}']
 
 export default function CommunicationPage() {
   const [activeTab, setActiveTab] = useState<TemplateType>('whatsapp')
-  const [isNewTemplateOpen, setIsNewTemplateOpen] = useState(false)
+  const [templates, setTemplates] = useState<Template[]>([])
+  const [isNewOpen, setIsNewOpen] = useState(false)
   const [editingTemplate, setEditingTemplate] = useState<Template | null>(null)
+  const [form, setForm] = useState({ nom: '', sujet: '', contenu: '' })
 
-  const templatesByType = (type: TemplateType) => templates.filter((t) => t.type === type)
-  const messageHistoryByType = (type: TemplateType) => messageHistory.filter((m) => m.type === type)
+  const byType = (type: TemplateType) => templates.filter(t => t.type === type)
 
-  const tabs: Array<{ value: TemplateType; label: string }> = [
-    { value: 'whatsapp', label: 'WhatsApp' },
-    { value: 'email', label: 'Email' },
-    { value: 'sms', label: 'SMS' },
+  const handleSave = () => {
+    if (!form.nom || !form.contenu) return
+    const vars = DEFAULT_VARIABLES.filter(v => form.contenu.includes(v))
+    if (editingTemplate) {
+      setTemplates(prev => prev.map(t => t.id === editingTemplate.id
+        ? { ...t, nom: form.nom, sujet: form.sujet, contenu: form.contenu, variables: vars }
+        : t))
+      setEditingTemplate(null)
+    } else {
+      setTemplates(prev => [...prev, {
+        id: Date.now().toString(), type: activeTab,
+        nom: form.nom, sujet: form.sujet, contenu: form.contenu, variables: vars,
+      }])
+    }
+    setForm({ nom: '', sujet: '', contenu: '' })
+    setIsNewOpen(false)
+  }
+
+  const tabs = [
+    { value: 'whatsapp' as TemplateType, label: 'WhatsApp', icon: <MessageSquare className="w-3.5 h-3.5" /> },
+    { value: 'email' as TemplateType, label: 'Email', icon: <Mail className="w-3.5 h-3.5" /> },
+    { value: 'sms' as TemplateType, label: 'SMS', icon: <Smartphone className="w-3.5 h-3.5" /> },
   ]
+
+  const TemplateForm = () => (
+    <div className="space-y-4">
+      <div>
+        <Label>Nom du template</Label>
+        <Input placeholder="Ex: Premier contact" value={form.nom} onChange={e => setForm(f => ({ ...f, nom: e.target.value }))} />
+      </div>
+      {activeTab === 'email' && (
+        <div>
+          <Label>Sujet</Label>
+          <Input placeholder="Sujet de l'email" value={form.sujet} onChange={e => setForm(f => ({ ...f, sujet: e.target.value }))} />
+        </div>
+      )}
+      <div>
+        <Label>Contenu</Label>
+        <Textarea
+          placeholder="Bonjour {prénom}, je suis {advisor} de ScaleWithMike…"
+          rows={6}
+          value={form.contenu}
+          onChange={e => setForm(f => ({ ...f, contenu: e.target.value }))}
+        />
+      </div>
+      <div className="text-xs text-slate-500 bg-slate-50 p-3 rounded-lg">
+        <p className="font-semibold mb-1">Variables disponibles :</p>
+        <div className="flex gap-1 flex-wrap">
+          {DEFAULT_VARIABLES.map(v => (
+            <button key={v} onClick={() => setForm(f => ({ ...f, contenu: f.contenu + v }))}
+              className="px-2 py-0.5 bg-white border border-slate-200 rounded text-xs hover:bg-slate-100">
+              {v}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="flex gap-2">
+        <Button variant="outline" className="flex-1" onClick={() => { setIsNewOpen(false); setEditingTemplate(null); setForm({ nom: '', sujet: '', contenu: '' }) }}>
+          Annuler
+        </Button>
+        <Button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white" onClick={handleSave} disabled={!form.nom || !form.contenu}>
+          {editingTemplate ? 'Enregistrer' : 'Créer le template'}
+        </Button>
+      </div>
+    </div>
+  )
 
   return (
     <div className="space-y-6">
-      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as TemplateType)} className="w-full">
-        <div className="flex items-center justify-between mb-4">
+      <Tabs value={activeTab} onValueChange={v => setActiveTab(v as TemplateType)} className="w-full">
+        <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
           <TabsList>
-            {tabs.map((tab) => (
-              <TabsTrigger key={tab.value} value={tab.value}>
-                {tab.label}
+            {tabs.map(tab => (
+              <TabsTrigger key={tab.value} value={tab.value} className="gap-1.5">
+                {tab.icon}{tab.label}
               </TabsTrigger>
             ))}
           </TabsList>
 
-          <Dialog open={isNewTemplateOpen} onOpenChange={setIsNewTemplateOpen}>
+          <Dialog open={isNewOpen} onOpenChange={v => { setIsNewOpen(v); if (!v) { setEditingTemplate(null); setForm({ nom: '', sujet: '', contenu: '' }) } }}>
             <DialogTrigger>
-              <button className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 h-10 px-4 py-2 gap-2">
-                <Plus className="w-4 h-4" />
-                Nouveau Template
-              </button>
+              <span className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md transition-colors cursor-pointer">
+                <Plus className="w-4 h-4" />Nouveau Template
+              </span>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Créer un nouveau template</DialogTitle>
+                <DialogTitle>Créer un template {activeTab}</DialogTitle>
               </DialogHeader>
-
-              <div className="space-y-4">
-                <div>
-                  <Label>Nom</Label>
-                  <Input placeholder="Ex: Premier contact" />
-                </div>
-
-                {activeTab === 'email' && (
-                  <div>
-                    <Label>Sujet</Label>
-                    <Input placeholder="Sujet de l'email" />
-                  </div>
-                )}
-
-                <div>
-                  <Label>Contenu</Label>
-                  <Textarea
-                    placeholder={'Contenu du message. Variables disponibles: {prénom}, {advisor}'}
-                    rows={6}
-                  />
-                </div>
-
-                <div className="text-xs text-slate-500">
-                  <p className="font-semibold mb-1">Variables disponibles:</p>
-                  <p>{'{prénom}, {advisor}, {entreprise}, {secteur}'}</p>
-                </div>
-
-                <Button className="w-full">Créer le template</Button>
-              </div>
+              <TemplateForm />
             </DialogContent>
           </Dialog>
         </div>
 
-        {tabs.map((tab) => (
-          <TabsContent key={tab.value} value={tab.value} className="space-y-6">
-            {/* Templates */}
-            <div className="space-y-4">
-              <h3 className="font-semibold text-sm">Templates ({templatesByType(tab.value).length})</h3>
-
+        {tabs.map(tab => (
+          <TabsContent key={tab.value} value={tab.value}>
+            {byType(tab.value).length === 0 ? (
+              <Card className="p-12 text-center text-slate-400">
+                <div className="text-slate-200 mb-4 flex justify-center">
+                  {tab.value === 'whatsapp' ? <MessageSquare className="w-12 h-12" /> : tab.value === 'email' ? <Mail className="w-12 h-12" /> : <Smartphone className="w-12 h-12" />}
+                </div>
+                <p className="text-lg font-semibold text-slate-700 mb-2">Aucun template {tab.label}</p>
+                <p className="text-sm mb-4">Créez vos premiers templates de messages pour gagner du temps lors des relances.</p>
+                <Button className="gap-2 bg-blue-600 hover:bg-blue-700 text-white"
+                  onClick={() => setIsNewOpen(true)}>
+                  <Plus className="w-4 h-4" />Créer un template
+                </Button>
+              </Card>
+            ) : (
               <div className="grid grid-cols-1 gap-4">
-                {templatesByType(tab.value).map((template) => (
+                {byType(tab.value).map(template => (
                   <Card key={template.id}>
                     <CardContent className="p-4">
-                      <div className="flex items-start justify-between">
+                      <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
-                          <h4 className="font-semibold text-sm mb-2">{template.nom}</h4>
-                          <p className="text-sm text-slate-600 mb-3 line-clamp-2">
-                            {template.contenu}
-                          </p>
-                          <div className="flex gap-2 flex-wrap">
-                            {template.variables.map((v) => (
-                              <Badge key={v} variant="secondary" className="text-xs">
-                                {v}
-                              </Badge>
+                          <h4 className="font-semibold text-sm mb-1">{template.nom}</h4>
+                          {template.sujet && <p className="text-xs text-slate-500 mb-1">Sujet : {template.sujet}</p>}
+                          <p className="text-sm text-slate-600 mb-3 line-clamp-2 whitespace-pre-line">{template.contenu}</p>
+                          <div className="flex gap-1.5 flex-wrap">
+                            {template.variables.map(v => (
+                              <Badge key={v} variant="secondary" className="text-xs">{v}</Badge>
                             ))}
                           </div>
                         </div>
-
-                        <div className="flex gap-2 ml-4">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="gap-1"
-                            onClick={() => setEditingTemplate(template)}
-                          >
-                            <Edit2 className="w-3 h-3" />
-                            Éditer
+                        <div className="flex gap-2 flex-shrink-0">
+                          <Button size="sm" variant="outline" className="gap-1"
+                            onClick={() => { setEditingTemplate(template); setForm({ nom: template.nom, sujet: template.sujet ?? '', contenu: template.contenu }); setIsNewOpen(true) }}>
+                            <Edit2 className="w-3 h-3" />Éditer
                           </Button>
-                          <Button size="sm">Utiliser</Button>
+                          <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">Utiliser</Button>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
                 ))}
               </div>
-            </div>
-
-            {/* Message History */}
-            <div className="space-y-4">
-              <h3 className="font-semibold text-sm">Historique Messages</h3>
-
-              <Card>
-                <CardContent className="p-0">
-                  <div className="overflow-x-auto">
-                    <Table>
-                      <TableHeader>
-                        <TableRow className="bg-slate-50">
-                          <TableHead className="text-xs font-semibold">LEAD</TableHead>
-                          <TableHead className="text-xs font-semibold">CONTENU</TableHead>
-                          <TableHead className="text-xs font-semibold">DATE</TableHead>
-                          <TableHead className="text-xs font-semibold">STATUT</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {messageHistoryByType(tab.value).map((msg) => {
-                          const lead = leads.find((l) => l.id === msg.leadId)
-                          return (
-                            <TableRow key={msg.id}>
-                              <TableCell className="text-sm font-medium">
-                                {lead && `${lead.prenom} ${lead.nom}`}
-                              </TableCell>
-                              <TableCell className="text-sm text-slate-600 max-w-xs truncate">
-                                {msg.contenu}
-                              </TableCell>
-                              <TableCell className="text-sm text-slate-600">{msg.date}</TableCell>
-                              <TableCell>
-                                <Badge
-                                  variant={
-                                    msg.status === 'repondu'
-                                      ? 'default'
-                                      : msg.status === 'lu'
-                                        ? 'secondary'
-                                        : 'outline'
-                                  }
-                                  className="text-xs"
-                                >
-                                  {msg.status === 'envoye'
-                                    ? 'Envoyé'
-                                    : msg.status === 'lu'
-                                      ? 'Lu'
-                                      : 'Répondu'}
-                                </Badge>
-                              </TableCell>
-                            </TableRow>
-                          )
-                        })}
-                      </TableBody>
-                    </Table>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            )}
           </TabsContent>
         ))}
       </Tabs>
