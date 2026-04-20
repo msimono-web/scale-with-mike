@@ -41,10 +41,13 @@ export default function LeadsPage() {
   const fetchLeads = useCallback(async () => {
     setLoading(true)
     try {
-      const res = await fetch('/api/leads')
-      if (res.ok) setLeads(await res.json())
+      const res = await fetch('/api/leads', { signal: AbortSignal.timeout(15000) })
+      if (res.ok) {
+        const data = await res.json()
+        if (Array.isArray(data)) setLeads(data)
+      }
     } catch (e) {
-      console.error(e)
+      console.error('Fetch leads error:', e)
     } finally {
       setLoading(false)
     }
