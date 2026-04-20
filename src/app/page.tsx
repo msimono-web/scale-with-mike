@@ -40,10 +40,15 @@ function DiagForm({ dark = false }: { dark?: boolean }) {
   }
 
   if (sent) return (
-    <div className={`rounded-3xl p-8 text-center ${dark ? 'bg-white/10 border-white/20' : 'bg-white border-slate-200'} border shadow-xl`}>
-      <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto mb-3" />
-      <p className={`font-black text-lg ${dark ? 'text-white' : 'text-slate-900'}`}>Demande reçue !</p>
-      <p className={`text-sm mt-1 ${dark ? 'text-white/60' : 'text-slate-500'}`}>On vous rappelle sous 24h.</p>
+    <div className={`rounded-3xl p-10 text-center animate-[fadeIn_0.6s_ease-out] ${dark ? 'bg-white/5 border-white/10 backdrop-blur-xl' : 'bg-white border-slate-100'} border shadow-2xl`}>
+      <div className={`w-14 h-14 rounded-full mx-auto mb-5 flex items-center justify-center ${dark ? 'bg-emerald-500/10 ring-1 ring-emerald-500/30' : 'bg-emerald-50 ring-1 ring-emerald-200'}`}>
+        <CheckCircle2 className="w-7 h-7 text-emerald-500" />
+      </div>
+      <p className={`font-semibold text-xl tracking-tight mb-2 ${dark ? 'text-white' : 'text-slate-900'}`}>C&apos;est noté.</p>
+      <p className={`text-sm leading-relaxed ${dark ? 'text-white/50' : 'text-slate-400'}`}>Notre équipe vous recontacte sous 24h.</p>
+      <div className={`mt-6 pt-5 border-t ${dark ? 'border-white/10' : 'border-slate-100'}`}>
+        <p className={`text-xs font-medium ${dark ? 'text-white/30' : 'text-slate-300'}`}>ScaleWithMike</p>
+      </div>
     </div>
   )
 
@@ -106,10 +111,15 @@ function DashboardCTA() {
   }
 
   if (sent) return (
-    <div className="text-center bg-gradient-to-b from-emerald-50 to-white rounded-3xl border border-emerald-200 py-10 px-6">
-      <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto mb-3" />
-      <p className="font-black text-lg text-slate-900">Demande reçue !</p>
-      <p className="text-sm mt-1 text-slate-500">On active votre dashboard sous 24h.</p>
+    <div className="text-center bg-white rounded-3xl border border-slate-100 py-10 px-6 shadow-2xl animate-[fadeIn_0.6s_ease-out]">
+      <div className="w-14 h-14 rounded-full mx-auto mb-5 flex items-center justify-center bg-emerald-50 ring-1 ring-emerald-200">
+        <CheckCircle2 className="w-7 h-7 text-emerald-500" />
+      </div>
+      <p className="font-semibold text-xl tracking-tight text-slate-900 mb-2">C&apos;est noté.</p>
+      <p className="text-sm leading-relaxed text-slate-400">Votre dashboard sera activé sous 24h.</p>
+      <div className="mt-6 pt-5 border-t border-slate-100">
+        <p className="text-xs font-medium text-slate-300">ScaleWithMike</p>
+      </div>
     </div>
   )
 
@@ -297,6 +307,10 @@ function ChatBot() {
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
         }
         @keyframes sparkle {
           0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
