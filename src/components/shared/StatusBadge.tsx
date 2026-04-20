@@ -18,8 +18,10 @@ export function getStatusConfig(status: LeadStatus) {
   return STATUS_CONFIG[status];
 }
 
+const FALLBACK = { label: 'Inconnu', color: 'bg-gray-500/15 text-gray-400 border-gray-500/30' }
+
 export default function StatusBadge({ status }: { status: LeadStatus }) {
-  const config = STATUS_CONFIG[status];
+  const config = STATUS_CONFIG[status] || FALLBACK;
   return (
     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border ${config.color}`}>
       {config.label}
