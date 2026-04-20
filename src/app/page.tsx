@@ -501,9 +501,6 @@ export default function Home() {
   return (
     <div className="bg-white text-slate-900 font-sans overflow-x-hidden">
 
-      {/* BANDEAU PRIX */}
-      <PriceBanner />
-
       {/* NAV */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-slate-200">
         {/* Row 1 : Logo + liens desktop + CTA */}
@@ -591,10 +588,19 @@ export default function Home() {
                 <span className="text-amber-400">par jour.</span>
               </h1>
 
-              <p className="text-white/60 text-lg mb-8 leading-relaxed max-w-lg">
+              <p className="text-white/60 text-lg mb-6 leading-relaxed max-w-lg">
                 Grâce à la prospection téléphonique externalisée.<br />
                 <strong className="text-white/80">B2B et B2C</strong> — isolation, formation, services, immobilier, énergie...
               </p>
+
+              {/* Bandeau prix vert cliquable */}
+              <a href="#contact" className="group flex items-center gap-3 px-6 py-3.5 mb-8 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white transition-all duration-300 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 hover:scale-[1.02] w-fit cursor-pointer">
+                <Phone className="w-5 h-5 flex-shrink-0" />
+                <span className="text-sm sm:text-base font-semibold">
+                  À partir de <span className="text-lg sm:text-xl font-black text-amber-300">800€/mois</span> — un agent qui appelle du matin au soir pour vous !
+                </span>
+                <ArrowRight className="w-4 h-4 flex-shrink-0 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+              </a>
 
               {/* Badges */}
               <div className="flex flex-col gap-3 mb-8">
