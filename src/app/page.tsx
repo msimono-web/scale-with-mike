@@ -498,6 +498,36 @@ export default function Home() {
     }
   }, [router])
 
+  // Écouter les événements Calendly embed — créer un lead quand un RDV est pris
+  useEffect(() => {
+    function handleCalendlyEvent(e: MessageEvent) {
+      // Vérifier que c'est un événement Calendly
+      if (!e.data || !e.data.event) return
+      if (e.data.event !== 'calendly.event_scheduled') return
+
+      const payload = e.data.payload || {}
+      const invitee = payload.invitee || {}
+
+      // Créer le lead via notre API
+      fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prenom: (invitee.name || '').split(' ')[0] || 'Prospect Calendly',
+          nom: (invitee.name || '').split(' ').slice(1).join(' ') || '',
+          email: invitee.email || '',
+          telephone: '',
+          entreprise: '',
+          source: 'Calendly',
+          notes: `RDV pris via le widget Calendly sur le site — ${new Date().toLocaleDateString('fr-FR')}`,
+        }),
+      }).catch(() => { /* silently fail */ })
+    }
+
+    window.addEventListener('message', handleCalendlyEvent)
+    return () => window.removeEventListener('message', handleCalendlyEvent)
+  }, [])
+
   return (
     <div className="bg-white text-slate-900 font-sans overflow-x-hidden">
 
