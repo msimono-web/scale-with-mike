@@ -80,7 +80,15 @@ export function DashboardSettingsProvider({ children }: { children: ReactNode })
         setSettings(prev => ({ ...prev, ...saved }))
       }
     } catch {}
-    // Fetch client spaces from Supabase
+    // Fetch client spaces from Supabase, sync local → Supabase if needed
+    const localSpaces: ClientSpace[] = (() => {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY)
+        if (!raw) return []
+        return JSON.parse(raw).clientSpaces ?? []
+      } catch { return [] }
+    })()
+
     fetch('/api/client-spaces')
       .then(r => r.ok ? r.json() : [])
       .then((spaces: Array<Record<string, unknown>>) => {
@@ -105,6 +113,15 @@ export function DashboardSettingsProvider({ children }: { children: ReactNode })
             vercelDomainId: (s.vercel_domain_id || undefined) as string | undefined,
           }))
           setSettings(prev => ({ ...prev, clientSpaces: mapped }))
+        } else if (localSpaces.length > 0) {
+          // Supabase is empty but localStorage has spaces → sync them up
+          localSpaces.forEach((space: ClientSpace) => {
+            fetch('/api/client-spaces', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(space),
+            }).catch(() => {})
+          })
         }
       })
       .catch(() => {})
