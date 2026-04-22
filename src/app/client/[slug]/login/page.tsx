@@ -36,17 +36,21 @@ async function fetchClientBySlug(slug: string): Promise<ClientSpace | null> {
   } catch { return null }
 }
 
-export default function ClientLoginPage({ params }: { params: { slug: string } }) {
+export default function ClientLoginPage({ params }: { params: Promise<{ slug: string }> }) {
   const router = useRouter()
   const [client, setClient] = useState<ClientSpace | null>(null)
+  const [slug, setSlug] = useState('')
   const [password, setPassword] = useState('')
   const [showPwd, setShowPwd] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    fetchClientBySlug(params.slug).then(found => setClient(found))
-  }, [params.slug])
+    params.then(p => {
+      setSlug(p.slug)
+      fetchClientBySlug(p.slug).then(found => setClient(found))
+    })
+  }, [params])
 
   const handlePasswordLogin = async () => {
     if (!password) return
@@ -56,11 +60,11 @@ export default function ClientLoginPage({ params }: { params: { slug: string } }
       const res = await fetch('/api/client-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug: params.slug, password }),
+        body: JSON.stringify({ slug, password }),
       })
       const data = await res.json()
       if (!res.ok) { setError(data.error ?? 'Identifiants incorrects'); return }
-      router.push(`/client/${params.slug}/dashboard`)
+      router.push(`/client/${slug}/dashboard`)
     } catch {
       setError('Erreur réseau, réessayez.')
     } finally {
@@ -76,7 +80,7 @@ export default function ClientLoginPage({ params }: { params: { slug: string } }
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/client/${params.slug}/auth/callback`,
+        redirectTo: `${window.location.origin}/client/${slug}/auth/callback`,
       },
     })
   }

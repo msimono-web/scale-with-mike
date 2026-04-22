@@ -98,17 +98,19 @@ function DiagForm({ client }: { client: ClientSpace }) {
 }
 
 /* ── Page principale ─────────────────────────────────────── */
-export default function ClientLandingPage({ params }: { params: { slug: string } }) {
+export default function ClientLandingPage({ params }: { params: Promise<{ slug: string }> }) {
   const [client, setClient] = useState<ClientSpace | null>(null)
   const [loaded, setLoaded] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   useEffect(() => {
-    fetchClientBySlug(params.slug).then(found => {
-      setClient(found)
-      setLoaded(true)
+    params.then(p => {
+      fetchClientBySlug(p.slug).then(found => {
+        setClient(found)
+        setLoaded(true)
+      })
     })
-  }, [params.slug])
+  }, [params])
 
   if (!loaded) return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50">
