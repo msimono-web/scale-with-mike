@@ -71,7 +71,7 @@ export function DashboardSettingsProvider({ children }: { children: ReactNode })
   const [settings, setSettings] = useState<DashboardSettings>(DEFAULT_SETTINGS)
   const [loaded, setLoaded] = useState(false)
 
-  // Load from localStorage on mount
+  // Load from localStorage + fetch client spaces from Supabase
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
@@ -80,7 +80,35 @@ export function DashboardSettingsProvider({ children }: { children: ReactNode })
         setSettings(prev => ({ ...prev, ...saved }))
       }
     } catch {}
-    setLoaded(true)
+    // Fetch client spaces from Supabase
+    fetch('/api/client-spaces')
+      .then(r => r.ok ? r.json() : [])
+      .then((spaces: Array<Record<string, unknown>>) => {
+        if (Array.isArray(spaces) && spaces.length > 0) {
+          const mapped = spaces.map((s): ClientSpace => ({
+            id: s.id as string,
+            slug: s.slug as string,
+            companyName: (s.company_name || '') as string,
+            activity: (s.activity || '') as string,
+            description: (s.description || '') as string,
+            primaryColor: (s.primary_color || '#3b82f6') as string,
+            secondaryColor: (s.secondary_color || '#10b981') as string,
+            logoUrl: (s.logo_url || '') as string,
+            heroTitle: (s.hero_title || '') as string,
+            heroSubtitle: (s.hero_subtitle || '') as string,
+            ctaText: (s.cta_text || '') as string,
+            calendlyUrl: (s.calendly_url || '') as string,
+            createdAt: (s.created_at || '') as string,
+            passwordHash: (s.password_hash || undefined) as string | undefined,
+            allowedEmails: (s.allowed_emails || undefined) as string | undefined,
+            customDomain: (s.custom_domain || undefined) as string | undefined,
+            vercelDomainId: (s.vercel_domain_id || undefined) as string | undefined,
+          }))
+          setSettings(prev => ({ ...prev, clientSpaces: mapped }))
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoaded(true))
   }, [])
 
   // Persist to localStorage on change
@@ -135,20 +163,49 @@ export function DashboardSettingsProvider({ children }: { children: ReactNode })
   }
 
   const addClientSpace = (space: Omit<ClientSpace, 'id' | 'createdAt'>) => {
+    const newSpace = { ...space, id: `cs-${Date.now()}`, createdAt: new Date().toISOString().split('T')[0] }
     setSettings(prev => ({
       ...prev,
-      clientSpaces: [
-        ...prev.clientSpaces,
-        { ...space, id: `cs-${Date.now()}`, createdAt: new Date().toISOString().split('T')[0] },
-      ],
+      clientSpaces: [...prev.clientSpaces, newSpace],
     }))
+    // Persist to Supabase
+    fetch('/api/client-spaces', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newSpace),
+    }).catch(() => {})
+    // Sync auth data
+    fetch('/api/client-space-sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        slug: newSpace.slug,
+        password: space.passwordHash ? undefined : undefined,
+        allowedEmails: space.allowedEmails,
+        customDomain: space.customDomain,
+      }),
+    }).catch(() => {})
   }
 
   const updateClientSpace = (id: string, patch: Partial<ClientSpace>) => {
-    setSettings(prev => ({
-      ...prev,
-      clientSpaces: prev.clientSpaces.map(cs => cs.id === id ? { ...cs, ...patch } : cs),
-    }))
+    let updatedSpace: ClientSpace | undefined
+    setSettings(prev => {
+      const updated = prev.clientSpaces.map(cs => {
+        if (cs.id === id) { updatedSpace = { ...cs, ...patch }; return updatedSpace }
+        return cs
+      })
+      return { ...prev, clientSpaces: updated }
+    })
+    // Persist to Supabase
+    setTimeout(() => {
+      if (updatedSpace) {
+        fetch('/api/client-spaces', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedSpace),
+        }).catch(() => {})
+      }
+    }, 100)
   }
 
   const removeClientSpace = (id: string) => {
@@ -156,6 +213,12 @@ export function DashboardSettingsProvider({ children }: { children: ReactNode })
       ...prev,
       clientSpaces: prev.clientSpaces.filter(cs => cs.id !== id),
     }))
+    // Delete from Supabase
+    fetch('/api/client-spaces', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    }).catch(() => {})
   }
 
   const getClientBySlug = (slug: string) =>
