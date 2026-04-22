@@ -6,13 +6,34 @@ import { Eye, EyeOff, Lock, CheckCircle2 } from 'lucide-react'
 import { createBrowserClient } from '@supabase/ssr'
 import type { ClientSpace } from '@/lib/types'
 
-function getClientSpaces(): ClientSpace[] {
-  if (typeof window === 'undefined') return []
+async function fetchClientBySlug(slug: string): Promise<ClientSpace | null> {
   try {
-    const raw = localStorage.getItem('swm-dashboard-settings')
-    if (!raw) return []
-    return JSON.parse(raw).clientSpaces ?? []
-  } catch { return [] }
+    const res = await fetch(`/api/client-spaces?slug=${encodeURIComponent(slug)}`)
+    if (!res.ok) return null
+    const data = await res.json()
+    const spaces = Array.isArray(data) ? data : [data]
+    const s = spaces.find((x: Record<string, unknown>) => x.slug === slug)
+    if (!s) return null
+    return {
+      id: s.id as string,
+      slug: s.slug as string,
+      companyName: (s.company_name || '') as string,
+      activity: (s.activity || '') as string,
+      description: (s.description || '') as string,
+      primaryColor: (s.primary_color || '#3b82f6') as string,
+      secondaryColor: (s.secondary_color || '#10b981') as string,
+      logoUrl: (s.logo_url || '') as string,
+      heroTitle: (s.hero_title || '') as string,
+      heroSubtitle: (s.hero_subtitle || '') as string,
+      ctaText: (s.cta_text || '') as string,
+      calendlyUrl: (s.calendly_url || '') as string,
+      createdAt: (s.created_at || '') as string,
+      passwordHash: (s.password_hash || undefined) as string | undefined,
+      allowedEmails: (s.allowed_emails || undefined) as string | undefined,
+      customDomain: (s.custom_domain || undefined) as string | undefined,
+      vercelDomainId: (s.vercel_domain_id || undefined) as string | undefined,
+    }
+  } catch { return null }
 }
 
 export default function ClientLoginPage({ params }: { params: { slug: string } }) {
@@ -24,9 +45,7 @@ export default function ClientLoginPage({ params }: { params: { slug: string } }
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const spaces = getClientSpaces()
-    const found = spaces.find(cs => cs.slug === params.slug) ?? null
-    setClient(found)
+    fetchClientBySlug(params.slug).then(found => setClient(found))
   }, [params.slug])
 
   const handlePasswordLogin = async () => {
